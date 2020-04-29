@@ -1,0 +1,26 @@
+
+include_directories(
+    ${JARVISOS_SOURCE_DIR}/sdk/include/jarvisos/wine
+    ${JARVISOS_SOURCE_DIR}/src/win32ss/include
+    ../include
+    .)
+
+list(APPEND SOURCE
+    enhmetafile.c
+    metafile.c
+    path.c
+    enhmfdrv/bitblt.c
+    enhmfdrv/dc.c
+    enhmfdrv/graphics.c
+    enhmfdrv/init.c
+    enhmfdrv/objects.c
+    mfdrv/bitblt.c
+    mfdrv/dc.c
+    mfdrv/graphics.c
+    mfdrv/init.c
+    mfdrv/objects.c
+    mfdrv/text.c
+    rosglue.c)
+
+add_library(winegdi ${SOURCE})
+add_dependencies(winegdi psdk)
