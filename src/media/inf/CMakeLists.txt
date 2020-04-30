@@ -54,14 +54,14 @@ foreach(item ${INF_FILES})
     add_custom_command(OUTPUT "${_converted_item}"
                        COMMAND native-utf16le "${_source_item}" "${_converted_item}"
                        DEPENDS native-utf16le "${_source_item}")
-    add_cd_file(TARGET converted_inf_files FILE ${_converted_item} DESTINATION reactos/inf FOR all)
+    add_cd_file(TARGET converted_inf_files FILE ${_converted_item} DESTINATION jarvisos/inf FOR all)
     list(APPEND _converted_inf_files ${_converted_item})
 endforeach(item)
 
 add_custom_target(converted_inf_files DEPENDS ${_converted_inf_files})
 
 foreach(item ${UTF8_INF_FILES})
-    add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/${item}" DESTINATION reactos/inf FOR all)
+    add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/${item}" DESTINATION jarvisos/inf FOR all)
 endforeach(item)
 
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/syssetup.inf DESTINATION reactos/inf FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/syssetup.inf DESTINATION jarvisos/inf FOR all)

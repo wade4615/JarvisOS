@@ -44,4 +44,4 @@ add_importlibs(rapps advapi32 comctl32 gdi32 wininet user32 shell32 shlwapi ole3
 add_pch(rapps include/rapps.h SOURCE)
 add_dependencies(rapps rappsmsg)
 add_message_headers(ANSI rappsmsg.mc)
-add_cd_file(TARGET rapps DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET rapps DESTINATION jarvisos/system32 FOR all)

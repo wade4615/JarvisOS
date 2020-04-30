@@ -10,4 +10,4 @@ list(APPEND SOURCE
 add_library(class2 MODULE ${SOURCE})
 set_module_type(class2 kernelmodedriver)
 add_importlibs(class2 scsiport ntoskrnl hal)
-add_cd_file(TARGET class2 DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET class2 DESTINATION jarvisos/system32/drivers NO_CAB FOR all)

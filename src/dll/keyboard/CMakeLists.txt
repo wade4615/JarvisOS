@@ -116,5 +116,5 @@ foreach(_keyboard_layout ${_keyboard_layouts})
     endif()
 
     add_dependencies(${_keyboard_layout} psdk)
-    add_cd_file(TARGET ${_keyboard_layout} DESTINATION reactos/system32 FOR all)
+    add_cd_file(TARGET ${_keyboard_layout} DESTINATION jarvisos/system32 FOR all)
 endforeach()

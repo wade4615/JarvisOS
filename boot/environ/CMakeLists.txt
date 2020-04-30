@@ -156,4 +156,4 @@ endif()
 
 add_dependencies(rosload asm bugcodes)
 
-add_cd_file(TARGET rosload DESTINATION reactos/system32/boot NO_CAB FOR all)
+add_cd_file(TARGET rosload DESTINATION jarvisos/system32/boot NO_CAB FOR all)

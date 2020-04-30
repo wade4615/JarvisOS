@@ -10,7 +10,7 @@ index 77dd1cde..900a8bfe 100644
 +    add_importlibs(${module} d3dcompiler_43 d3dxof d3dwine user32 ole32 gdi32 msvcrt kernel32 ntdll)
      add_delay_importlibs(${module} windowscodecs)
      add_pch(${module} ../d3dx9_36/precomp.h SOURCE)
-     add_cd_file(TARGET ${module} DESTINATION reactos/system32 FOR all)
+     add_cd_file(TARGET ${module} DESTINATION jarvisos/system32 FOR all)
 diff --git a/dll/directx/wine/d3dx9_36/surface.c b/dll/directx/wine/d3dx9_36/surface.c
 index d236feb0..3c308d36 100644
 --- a/dll/directx/wine/d3dx9_36/surface.c

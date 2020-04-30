@@ -23,4 +23,4 @@ add_library(usrmgr MODULE
 set_module_type(usrmgr cpl UNICODE)
 add_importlibs(usrmgr advapi32 user32 gdi32 comctl32 netapi32 msvcrt kernel32 ntdll)
 add_pch(usrmgr usrmgr.h SOURCE)
-add_cd_file(TARGET usrmgr DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET usrmgr DESTINATION jarvisos/system32 FOR all)

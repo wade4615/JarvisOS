@@ -10,4 +10,4 @@ add_library(storprop MODULE
 set_module_type(storprop win32dll UNICODE)
 target_link_libraries(storprop wine)
 add_importlibs(storprop setupapi advapi32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET storprop DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET storprop DESTINATION jarvisos/system32 FOR all)

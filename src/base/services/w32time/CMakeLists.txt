@@ -9,4 +9,4 @@ add_library(w32time MODULE
 set_module_type(w32time win32dll UNICODE)
 
 add_importlibs(w32time ws2_32 advapi32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET w32time DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET w32time DESTINATION jarvisos/system32 FOR all)

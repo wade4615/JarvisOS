@@ -10,4 +10,4 @@ add_library(npptools MODULE
 
 set_module_type(npptools win32dll)
 add_importlibs(npptools msvcrt kernel32 ntdll)
-add_cd_file(TARGET npptools DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET npptools DESTINATION jarvisos/system32 FOR all)

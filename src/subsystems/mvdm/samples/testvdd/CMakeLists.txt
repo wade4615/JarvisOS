@@ -13,4 +13,4 @@ set_module_type(testvdd win32dll UNICODE)
 target_link_libraries(testvdd ${PSEH_LIB})
 
 add_importlibs(testvdd ntvdm user32 msvcrt kernel32 ntdll)
-#add_cd_file(TARGET testvdd DESTINATION reactos/system32 FOR all)
+#add_cd_file(TARGET testvdd DESTINATION jarvisos/system32 FOR all)

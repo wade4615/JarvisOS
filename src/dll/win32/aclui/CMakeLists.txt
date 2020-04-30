@@ -18,4 +18,4 @@ add_library(aclui MODULE
 set_module_type(aclui win32dll UNICODE)
 add_importlibs(aclui user32 gdi32 comctl32 ole32 oleaut32 advapi32 uxtheme msvcrt kernel32 ntdll)
 add_pch(aclui precomp.h SOURCE)
-add_cd_file(TARGET aclui DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET aclui DESTINATION jarvisos/system32 FOR all)

@@ -45,5 +45,5 @@ add_custom_target(
 add_cd_file(
     TARGET jarvisos_cab_inf
     FILE ${CMAKE_CURRENT_BINARY_DIR}/jarvisos.inf
-    DESTINATION reactos
+    DESTINATION jarvisos
     NO_CAB FOR bootcd regtest)

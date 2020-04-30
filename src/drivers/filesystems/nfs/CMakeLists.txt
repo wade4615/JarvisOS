@@ -21,4 +21,4 @@ if(USE_CLANG_CL OR (NOT MSVC))
     endif()
 endif()
 
-add_cd_file(TARGET nfs41_driver DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET nfs41_driver DESTINATION jarvisos/system32/drivers FOR all)

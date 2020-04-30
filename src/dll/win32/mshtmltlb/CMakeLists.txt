@@ -12,4 +12,4 @@ set_source_files_properties(rsrc.rc PROPERTIES OBJECT_DEPENDS "${mshtml_tlb_rc_d
 set_module_type(mshtml.tlb module)
 set_target_properties(mshtml.tlb PROPERTIES SUFFIX "")
 add_dependencies(mshtml.tlb stdole2)
-add_cd_file(TARGET mshtml.tlb DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET mshtml.tlb DESTINATION jarvisos/system32 FOR all)

@@ -27,4 +27,4 @@ add_library(usbport MODULE
 add_pch(usbport usbport.h SOURCE)
 set_module_type(usbport kernelmodedriver)
 add_importlibs(usbport ntoskrnl hal)
-add_cd_file(TARGET usbport DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET usbport DESTINATION jarvisos/system32/drivers NO_CAB FOR all)

@@ -31,4 +31,4 @@ if(MSVC)
 endif()
 
 add_importlibs(msvcrt kernel32 ntdll)
-add_cd_file(TARGET msvcrt DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msvcrt DESTINATION jarvisos/system32 FOR all)

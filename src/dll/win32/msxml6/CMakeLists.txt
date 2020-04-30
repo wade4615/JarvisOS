@@ -21,4 +21,4 @@ set_source_files_properties(rsrc.rc PROPERTIES OBJECT_DEPENDS ${CMAKE_CURRENT_BI
 target_link_libraries(msxml6 wine)
 add_importlibs(msxml6 msxml3 msvcrt kernel32)
 add_dependencies(msxml6 stdole2)
-add_cd_file(TARGET msxml6 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msxml6 DESTINATION jarvisos/system32 FOR all)
