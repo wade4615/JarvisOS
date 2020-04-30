@@ -21,4 +21,4 @@ add_library(timedate MODULE
 set_module_type(timedate cpl UNICODE)
 add_importlibs(timedate w32time advapi32 user32 gdi32 comctl32 ws2_32 iphlpapi msvcrt kernel32 ntdll)
 add_pch(timedate timedate.h SOURCE)
-add_cd_file(TARGET timedate DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET timedate DESTINATION jarvisos/system32 FOR all)

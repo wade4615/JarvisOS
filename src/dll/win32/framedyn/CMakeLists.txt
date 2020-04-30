@@ -15,7 +15,7 @@ endif()
 add_library(framedyn MODULE ${SOURCE})
 set_module_type(framedyn win32dll UNICODE)
 add_importlibs(framedyn oleaut32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET framedyn DESTINATION reactos/system32/wbem FOR all)
+add_cd_file(TARGET framedyn DESTINATION jarvisos/system32/wbem FOR all)
 
 if(NOT MSVC)
     add_asm_files(framedynex_asm alias_gcc.s)

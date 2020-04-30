@@ -21,4 +21,4 @@ target_link_libraries(lpk wine)
 
 add_importlibs(lpk usp10 version user32 gdi32 msvcrt kernel32 ntdll)
 add_pch(lpk ros_lpk.h SOURCE)
-add_cd_file(TARGET lpk DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET lpk DESTINATION jarvisos/system32 FOR all)

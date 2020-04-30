@@ -29,4 +29,4 @@ if(MSVC)
 endif()
 
 add_importlibs(msvcrt20 kernel32 ntdll)
-add_cd_file(TARGET msvcrt20 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msvcrt20 DESTINATION jarvisos/system32 FOR all)

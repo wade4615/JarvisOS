@@ -119,4 +119,4 @@ if(NOT USE_CLANG_CL)
     add_pch(ext2fs inc/ext2fs.h SOURCE)
 endif()
 
-add_cd_file(TARGET ext2fs DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET ext2fs DESTINATION jarvisos/system32/drivers FOR all)

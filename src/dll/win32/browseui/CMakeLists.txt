@@ -50,7 +50,7 @@ set_module_type(browseui win32dll UNICODE)
 target_link_libraries(browseui shellbars shellfind uuid wine)
 add_importlibs(browseui uxtheme shlwapi shell32 comctl32 gdi32 ole32 oleaut32 user32 advapi32 mpr msvcrt kernel32 ntdll)
 add_pch(browseui precomp.h SOURCE)
-add_cd_file(TARGET browseui DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET browseui DESTINATION jarvisos/system32 FOR all)
 
 if(NOT MSVC)
     add_target_compile_flags(browseui "-Wno-unused-but-set-variable")

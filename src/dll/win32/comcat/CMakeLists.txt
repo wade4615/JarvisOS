@@ -10,4 +10,4 @@ list(APPEND SOURCE
 add_library(comcat MODULE ${SOURCE} version.rc)
 set_module_type(comcat win32dll)
 add_importlibs(comcat ole32 msvcrt kernel32)
-add_cd_file(TARGET comcat DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET comcat DESTINATION jarvisos/system32 FOR all)

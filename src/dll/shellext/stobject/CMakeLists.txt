@@ -53,4 +53,4 @@ add_importlibs(stobject
     ntdll)
 
 add_pch(stobject precomp.h SOURCE)
-add_cd_file(TARGET stobject DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET stobject DESTINATION jarvisos/system32 FOR all)

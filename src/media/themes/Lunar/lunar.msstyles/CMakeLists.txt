@@ -21,4 +21,4 @@ set_source_files_properties(lunar.rc PROPERTIES OBJECT_DEPENDS "${_converted_fil
 add_library(lunar.msstyles MODULE lunar.rc)
 set_module_type(lunar.msstyles module)
 set_target_properties(lunar.msstyles PROPERTIES SUFFIX "")
-add_cd_file(TARGET lunar.msstyles DESTINATION reactos/Resources/Themes/Lunar FOR all)
+add_cd_file(TARGET lunar.msstyles DESTINATION jarvisos/Resources/Themes/Lunar FOR all)

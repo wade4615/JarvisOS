@@ -39,7 +39,7 @@ function(add_d3dx9_target __version)
     add_importlibs(${module} d3dcompiler_43 d3dxof d3dwine user32 ole32 gdi32 msvcrt kernel32 ntdll)
     add_delay_importlibs(${module} windowscodecs)
     add_pch(${module} ../d3dx9_36/precomp.h SOURCE)
-    add_cd_file(TARGET ${module} DESTINATION reactos/system32 FOR all)
+    add_cd_file(TARGET ${module} DESTINATION jarvisos/system32 FOR all)
     
     target_compile_definitions(${module} PRIVATE -DD3DX_SDK_VERSION=${__version} -D__WINESRC__ -Dcopysignf=_copysignf)
     target_include_directories(${module} PRIVATE ${JARVISOS_SOURCE_DIR}/sdk/include/jarvisos/wine)

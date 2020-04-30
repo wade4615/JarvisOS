@@ -26,4 +26,4 @@ add_library(dinput8 MODULE
 set_module_type(dinput8 win32dll)
 target_link_libraries(dinput8 dxguid uuid wine)
 add_importlibs(dinput8 comctl32 ole32 user32 advapi32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET dinput8 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET dinput8 DESTINATION jarvisos/system32 FOR all)

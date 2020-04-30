@@ -27,4 +27,4 @@ if(ARCH STREQUAL "i386")
     endif()
 endif()
 
-add_cd_file(TARGET welcome DESTINATION reactos NO_CAB FOR bootcd)
+add_cd_file(TARGET welcome DESTINATION jarvisos NO_CAB FOR bootcd)

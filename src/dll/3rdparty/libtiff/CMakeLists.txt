@@ -67,7 +67,7 @@ set_module_type(libtiff win32dll)
 target_link_libraries(libtiff zlib getopt)
 add_importlibs(libtiff user32 msvcrt kernel32 ntdll)
 add_pch(libtiff precomp.h SOURCE)
-add_cd_file(TARGET libtiff DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET libtiff DESTINATION jarvisos/system32 FOR all)
 
 if(NOT MSVC)
     add_target_compile_flags(libtiff "-Wno-unused-but-set-variable")

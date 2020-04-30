@@ -68,5 +68,5 @@ list(APPEND FONT_FILES
     wingding.ttf)
 
 foreach(item ${FONT_FILES})
-    add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/${item}" DESTINATION reactos/Fonts FOR all)
+    add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/${item}" DESTINATION jarvisos/Fonts FOR all)
 endforeach(item)

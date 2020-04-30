@@ -27,4 +27,4 @@ if(MSVC)
 endif()
 
 add_importlibs(crtdll kernel32 ntdll)
-add_cd_file(TARGET crtdll DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET crtdll DESTINATION jarvisos/system32 FOR all)

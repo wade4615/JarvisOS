@@ -33,4 +33,4 @@ list(APPEND SOURCE
 add_executable(regexpl ${SOURCE} regexpl.rc)
 set_module_type(regexpl win32cui)
 add_importlibs(regexpl user32 advapi32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET regexpl DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET regexpl DESTINATION jarvisos/system32 FOR all)

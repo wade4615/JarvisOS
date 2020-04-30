@@ -394,8 +394,8 @@ AddNewTopicEx(
     {
         pTopic->bIsCommand = TRUE;
 
-        /* Check for special applications: ReactOS Installer */
-        if (_tcsicmp(szCommand, TEXT("reactos.exe")) == 0)
+        /* Check for special applications: JarvisOS Installer */
+        if (_tcsicmp(szCommand, TEXT("jarvisos.exe")) == 0)
         {
             ExpandInstallerPath(szCommand, pTopic->szCommand, ARRAYSIZE(pTopic->szCommand));
         }

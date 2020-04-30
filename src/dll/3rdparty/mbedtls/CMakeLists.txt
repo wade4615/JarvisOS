@@ -91,7 +91,7 @@ add_importlibs(mbedtls advapi32 msvcrt kernel32 ntdll)
 # and explicitly export it from msvcrt for it to work... what on earth?!
 add_definitions(-DMINGW_HAS_SECURE_API -DCRTDLL)
 
-add_cd_file(TARGET mbedtls DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET mbedtls DESTINATION jarvisos/system32 FOR all)
 
 if(NOT MSVC)
     add_target_compile_flags(mbedtls "-Wno-pointer-sign -Wno-unused-function")

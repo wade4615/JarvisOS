@@ -44,4 +44,4 @@ target_link_libraries(ntkrnlmp cportlib csq ${PSEH_LIB} arbiter cmlib ntlsalib r
 add_importlibs(ntkrnlmp hal kdcom bootvid)
 add_pch(ntkrnlmp ${JARVISOS_SOURCE_DIR}/src/ntoskrnl/include/ntoskrnl.h NTKRNLMP_SOURCE)
 add_dependencies(ntkrnlmp psdk bugcodes asm)
-add_cd_file(TARGET ntkrnlmp DESTINATION reactos/system32 NO_CAB FOR all)
+add_cd_file(TARGET ntkrnlmp DESTINATION jarvisos/system32 NO_CAB FOR all)

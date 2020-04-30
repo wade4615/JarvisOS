@@ -53,4 +53,4 @@ if(MSVC)
 endif()
 
 add_pch(diskpart diskpart.h SOURCE)
-add_cd_file(TARGET diskpart DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET diskpart DESTINATION jarvisos/system32 FOR all)

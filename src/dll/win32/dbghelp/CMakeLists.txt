@@ -85,6 +85,6 @@ else()
     add_delay_importlibs(dbghelp version)
     add_importlibs(dbghelp psapi msvcrt kernel32 ntdll)
     add_pch(dbghelp precomp.h SOURCE)
-    add_cd_file(TARGET dbghelp DESTINATION reactos/system32 FOR all)
+    add_cd_file(TARGET dbghelp DESTINATION jarvisos/system32 FOR all)
 
 endif()

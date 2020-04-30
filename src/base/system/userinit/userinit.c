@@ -691,7 +691,7 @@ Restart:
             break;
 
         case INSTALLER:
-            Success = StartInstaller(L"reactos.exe");
+            Success = StartInstaller(L"jarvisos.exe");
             break;
 
         case REBOOT:

@@ -48,7 +48,7 @@ if(MSVC)
 endif()
 
 add_pch(libxslt precomp.h SOURCE)
-add_cd_file(TARGET libxslt DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET libxslt DESTINATION jarvisos/system32 FOR all)
 
 if(USE_CLANG_CL OR (NOT MSVC))
     add_target_compile_flags(libxslt "-Wno-pointer-sign -Wno-unused-function")

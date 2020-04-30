@@ -14,4 +14,4 @@ add_library(wkssvc MODULE
 set_module_type(wkssvc win32dll UNICODE)
 target_link_libraries(wkssvc wine)
 add_importlibs(wkssvc advapi32 rpcrt4 msvcrt kernel32 ntdll)
-add_cd_file(TARGET wkssvc DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET wkssvc DESTINATION jarvisos/system32 FOR all)

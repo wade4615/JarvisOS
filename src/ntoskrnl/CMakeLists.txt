@@ -53,7 +53,7 @@ endif()
 add_importlibs(ntoskrnl hal kdcom bootvid)
 add_pch(ntoskrnl ${JARVISOS_SOURCE_DIR}/src/ntoskrnl/include/ntoskrnl.h NTOSKRNL_SOURCE)
 add_dependencies(ntoskrnl psdk bugcodes asm)
-add_cd_file(TARGET ntoskrnl DESTINATION reactos/system32 NO_CAB FOR all)
+add_cd_file(TARGET ntoskrnl DESTINATION jarvisos/system32 NO_CAB FOR all)
 
 if(BUILD_MP)
     add_subdirectory(ntkrnlmp)
