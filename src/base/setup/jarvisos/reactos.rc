@@ -5,8 +5,8 @@
 #include "resource.h"
 
 #define REACTOS_STR_FILE_DESCRIPTION    "JarvisOS Setup"
-#define REACTOS_STR_INTERNAL_NAME       "reactos"
-#define REACTOS_STR_ORIGINAL_FILENAME   "reactos.exe"
+#define REACTOS_STR_INTERNAL_NAME       "jarvisos"
+#define REACTOS_STR_ORIGINAL_FILENAME   "jarvisos.exe"
 #include <jarvisos/version.rc>
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
@@ -22,7 +22,7 @@ IDI_PARTITION   ICON "res/partition.ico"
 IDB_WATERMARK   BITMAP "res/watermark.bmp"
 IDB_HEADER      BITMAP "res/header.bmp"
 
-CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "reactos.exe.manifest"
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "jarvisos.exe.manifest"
 
 /* UTF-8 */
 #pragma code_page(65001)

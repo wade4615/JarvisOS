@@ -208,7 +208,7 @@ LoadReactOSSetup(
 #elif defined(_M_MRX000)
         "MIPS\\",
 #endif
-        "reactos\\",
+        "jarvisos\\",
         NULL
     };
 
