@@ -7,7 +7,7 @@ add_definitions(
 
 include_directories(
     schilytools/include
-    reactos
+    jarvisos
     ${JARVISOS_BINARY_DIR}/sdk/include)
 
 # libschily and libsiconv are licensed under CDDL whereas mkisofs is licensed under GPL.
