@@ -1,0 +1,60 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+                0x00400000                __image_base__ = 0x400000
+                0x00000000                __dll__ = 0x0
+                0x00400000                ___ImageBase = 0x400000
+                0x00001000                __section_alignment__ = 0x1000
+                0x00000200                __file_alignment__ = 0x200
+                0x00000004                __major_os_version__ = 0x4
+                0x00000000                __minor_os_version__ = 0x0
+                0x00000001                __major_image_version__ = 0x1
+                0x00000000                __minor_image_version__ = 0x0
+                0x00000004                __major_subsystem_version__ = 0x4
+                0x00000000                __minor_subsystem_version__ = 0x0
+                0x00000003                __subsystem__ = 0x3
+                0x00200000                __size_of_stack_reserve__ = 0x200000
+                0x00001000                __size_of_stack_commit__ = 0x1000
+                0x00100000                __size_of_heap_reserve__ = 0x100000
+                0x00001000                __size_of_heap_commit__ = 0x1000
+                0x00000000                __loader_flags__ = 0x0
+                0x00000000                __dll_characteristics__ = 0x0
+LOAD c:/rosbe/i386/bin/../lib/gcc/i686-w64-mingw32/8.4.0/libgcc.a
+LOAD obj/kernel.o
+LOAD obj/boot.o
+                0x00100000                . = 0x100000
+
+.text           0x00100000     0x1000
+ *(.multiboot)
+ .multiboot     0x00100000        0xc obj/boot.o
+ *(.text)
+ *fill*         0x0010000c        0x4 
+ .text          0x00100010       0x20 obj/kernel.o
+                0x00100010                kernel_entry
+                0x00100020                die
+ .text          0x00100030       0x13 obj/boot.o
+                0x00100030                start
+
+.rdata          0x00101000     0x1000
+ .rdata$zzz     0x00101000       0x1c obj/kernel.o
+
+.rodata
+ *(.rodata)
+
+.data           0x00140000        0x0
+ *(.data)
+ .data          0x00140000        0x0 obj/kernel.o
+
+.bss            0x00140000     0x4000
+ *(COMMON)
+ *(.bss)
+ .bss           0x00140000        0x0 obj/kernel.o
+ *(.bootstrap_stack)
+ .bootstrap_stack
+                0x00140000     0x4000 obj/boot.o
+OUTPUT(output/ntoskrnl.exe pei-i386)
