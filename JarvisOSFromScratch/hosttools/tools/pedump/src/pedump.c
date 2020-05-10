@@ -9,6 +9,7 @@
 //==================================
 #include <windows.h>
 #include <stdio.h>
+#include "pedump.h"
 
 // Global variables set here, and used in EXEDUMP.C and OBJDUMP.C
 BOOL fShowRelocations = FALSE;
@@ -59,6 +60,24 @@ void DumpFile(LPSTR filename) {
     }
 
     printf("Dump of file %s\n\n", filename);
+
+    dosHeader = (PIMAGE_DOS_HEADER) lpFileBase;
+    PIMAGE_FILE_HEADER pImgFileHdr = (PIMAGE_FILE_HEADER) lpFileBase;
+
+    if (dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
+        DumpExeFile(dosHeader);
+    } else if (dosHeader->e_magic == IMAGE_SEPARATE_DEBUG_SIGNATURE) {
+        DumpDbgFile((PIMAGE_SEPARATE_DEBUG_HEADER) lpFileBase);
+    } else if (pImgFileHdr->Machine == IMAGE_FILE_MACHINE_I386 || pImgFileHdr->Machine == IMAGE_FILE_MACHINE_ALPHA) {
+        if (pImgFileHdr->SizeOfOptionalHeader == 0)   // 0 optional header
+            DumpObjFile(pImgFileHdr);                 // means it's an OBJ
+        else if (pImgFileHdr->SizeOfOptionalHeader == IMAGE_SIZEOF_ROM_OPTIONAL_HEADER) {
+            DumpROMImage((PIMAGE_ROM_HEADERS) pImgFileHdr);
+        }
+    } else if (0 == strncmp((char*) lpFileBase, IMAGE_ARCHIVE_START, IMAGE_ARCHIVE_START_SIZE)) {
+        DumpLibFile(lpFileBase);
+    } else
+        printf("unrecognized file format\n");
 
     UnmapViewOfFile(lpFileBase);
     CloseHandle(hFileMapping);
