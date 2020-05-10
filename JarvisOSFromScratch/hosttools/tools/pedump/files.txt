@@ -1,0 +1,17 @@
+ Volume in drive C has no label.
+ Volume Serial Number is D86C-3322
+
+ Directory of C:\projects\JarvisOS\JarvisOS From Scratch\hosttools\tools\pedump
+
+05/09/2020  18:19             5,695 coffsymboltable.cpp
+05/09/2020  18:19            20,957 common.cpp
+05/09/2020  18:19             2,875 dbgdump.cpp
+05/09/2020  18:19            16,988 exedump.cpp
+05/09/2020  18:19             6,706 libdump.cpp
+05/09/2020  18:19             4,101 objdump.cpp
+05/09/2020  18:19             5,064 pedump.cpp
+05/09/2020  18:19            13,950 resdump.cpp
+05/09/2020  18:19             2,391 romimage.cpp
+05/09/2020  18:19             4,804 symboltablesupport.cpp
+              10 File(s)         83,531 bytes
+               0 Dir(s)  456,662,626,304 bytes free

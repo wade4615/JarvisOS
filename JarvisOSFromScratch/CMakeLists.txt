@@ -97,7 +97,7 @@ if(NOT CMAKE_CROSSCOMPILING)
 #        list(APPEND NATIVE_TARGETS rsym pefixup)
 #    endif()
 
-    set(NATIVE_TARGETS bin2c widl fatten hpp obj2bin spec2def utf16le format)
+    set(NATIVE_TARGETS bin2c widl fatten hpp obj2bin spec2def utf16le format pedump)
     if(NOT MSVC)
         list(APPEND NATIVE_TARGETS rsym pefixup)
     endif()

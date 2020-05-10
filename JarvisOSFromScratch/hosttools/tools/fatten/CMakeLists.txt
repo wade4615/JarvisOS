@@ -1,4 +1,3 @@
-
 add_host_tool(fatten
     fatten.c
     fatfs/diskio.c
