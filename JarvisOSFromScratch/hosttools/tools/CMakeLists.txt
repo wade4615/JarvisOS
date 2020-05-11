@@ -35,7 +35,6 @@ add_subdirectory(widl)
 add_subdirectory(wpp)
 #add_subdirectory(xml2sdb)
 add_subdirectory(format)
-add_subdirectory(pedump)
 
 if(NOT MSVC)
 #    add_subdirectory(log2lines)
