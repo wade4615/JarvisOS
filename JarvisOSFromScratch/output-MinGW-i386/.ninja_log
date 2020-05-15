@@ -1,0 +1,8 @@
+# ninja log v5
+14	32	6112543310619379	source/ntoskrnl/CMakeFiles/ntoskrnl.dir/src/boot.asm.obj	fe8a457fd4d0902b
+4	140	6112543311638731	hosttools/tools/obj2bin/CMakeFiles/obj2bin.dir/obj2bin.c.obj	febc56bebc2502b8
+145	323	6112543313367673	hosttools/tools/obj2bin/obj2bin.exe	5d1ad597635f12d
+18	339	6112543313637504	source/ntoskrnl/CMakeFiles/ntoskrnl.dir/src/kernel.c.obj	dc7169d8e96da0ff
+340	465	6112543314836760	source/ntoskrnl/ntoskrnl.exe	299af82a95f18402
+10	751	6112543317750154	hosttools/tools/format/CMakeFiles/format.dir/src/format.c.obj	70796cc44981b17f
+755	922	6112543319389871	hosttools/tools/format/format.exe	13a0623b34e27753

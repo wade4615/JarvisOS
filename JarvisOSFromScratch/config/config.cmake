@@ -83,12 +83,9 @@ set(_PREFAST_ FALSE CACHE BOOL
 "Whether to enable PREFAST while compiling.")
 set(_VS_ANALYZE_ FALSE CACHE BOOL
 "Whether to enable static analysis while compiling.")
-
-    option(RUNTIME_CHECKS "Whether to enable runtime checks on MSVC" ON)
-endif()
-
-if(GCC)
-    option(STACK_PROTECTOR "Whether to enable the GCC stack checker while compiling" OFF)
+else()
+set(STACK_PROTECTOR FALSE CACHE BOOL
+"Whether to enbable the GCC stack checker while compiling")
 endif()
 
 set(USE_DUMMY_PSEH FALSE CACHE BOOL
