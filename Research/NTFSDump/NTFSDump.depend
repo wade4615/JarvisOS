@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1590101686 source:c:\projects\ntfsdump\main.c
+	<windows.h>
+	<tchar.h>
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<tchar.h>
+	<shellapi.h>
+
+1590102726 source:c:\projects\ntfsdump\main.cpp
+	<windows.h>
+	<tchar.h>
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<tchar.h>
+	<shellapi.h>
+

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="DumpPartition/DumpPartition.cbp" />
+		<Project filename="NTFSDump/NTFSDump.cbp" />
+		<Project filename="NTFSInfo/NTFSInfo.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

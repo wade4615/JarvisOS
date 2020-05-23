@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1590102561 source:c:\projects\ntfsinfo\ntfsinfo.c
+	<windows.h>
+	<tchar.h>
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<tchar.h>
+	<shellapi.h>
+
