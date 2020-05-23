@@ -8,3 +8,12 @@
 	<tchar.h>
 	<shellapi.h>
 
+1590102561 source:c:\projects\jarvisos\research\ntfsinfo\ntfsinfo.c
+	<windows.h>
+	<tchar.h>
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<tchar.h>
+	<shellapi.h>
+

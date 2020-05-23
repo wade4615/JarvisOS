@@ -52,7 +52,7 @@ typedef struct _BootSector {
     LONGLONG    serialNumber;
     DWORD       checkSum;
     BYTE        bootCode[0x1aa];
-    BYTE        endMarker[2];
+    WORD        endMarker;
 } BootSector, *BootSectorPtr;
 
 typedef struct _RecordHeader {
@@ -130,13 +130,6 @@ typedef struct _AttributeRecord {
 }AttributeRecord, *AttributeRecordPtr;
 #pragma pack(pop)
 
-struct Run {
-    LONGLONG    offset;
-    LONGLONG    length;
-    Run(): offset(0LL), length(0LL) {}
-    Run(LONGLONG offset, LONGLONG length): offset(offset), length(length) {}
-};
-
 #define DOT     _T('.')
 #define COMMA   _T(',')
 #define MAX     50
@@ -182,52 +175,107 @@ TCHAR *addCommas(ULONGLONG f)
 }
 
 void printBootSector(BootSectorPtr bootSector){
-    printf("OEM ID:\t\t \"%s\"\n", bootSector->oemID);
     DWORD sectorSize = bootSector->bytePerSector;
     DWORD clusterSize = bootSector->bytePerSector * bootSector->sectorPerCluster;
     DWORD recordSize = bootSector->clusterPerRecord >= 0 ? bootSector->clusterPerRecord * clusterSize : 1 << -bootSector->clusterPerRecord;
     LONGLONG totalCluster = bootSector->totalSector / bootSector->sectorPerCluster;
+    LONGLONG driveSize = bootSector->totalSector * bootSector->bytePerSector;
 
-    _tprintf(_T("Byte/Sector:\t %u\n"), sectorSize);
-    _tprintf(_T("Sector/Cluster:\t %u\n"), bootSector->sectorPerCluster);
-    _tprintf(_T("Total Sector:\t %s\n"), addCommas(bootSector->totalSector));
-    _tprintf(_T("Cluster of MFT:\t %s\n"), addCommas(bootSector->MFTCluster));
-    _tprintf(_T("Cluster/Record:\t %u\n"), bootSector->clusterPerRecord);
-    _tprintf(_T("Cluster Size:\t %s\n"), addCommas(clusterSize));
-    _tprintf(_T("Record Size:\t %s\n"), addCommas(recordSize));
+    _tprintf(_T("OEM ID:\t\t\t\t \"%s\"\n"), bootSector->oemID);
+    _tprintf(_T("Byte/Sector:\t\t\t %u\n"), bootSector->bytePerSector);
+    _tprintf(_T("Sector/Cluster:\t\t\t %u\n"), bootSector->sectorPerCluster);
+    _tprintf(_T("Media descriptor:\t\t %X\n"), bootSector->mediaDescriptor);
+    _tprintf(_T("Sector/Track:\t\t\t %u\n"), bootSector->sectorPerTrack);
+    _tprintf(_T("Head Number:\t\t\t %u\n"), bootSector->headNumber);
+    _tprintf(_T("Hidden Sector:\t\t\t %s\n"), addCommas(bootSector->hiddenSector));
+    _tprintf(_T("Total Sector:\t\t\t %s\n"), addCommas(bootSector->totalSector));
+    _tprintf(_T("MFT Cluster:\t\t\t %s\n"), addCommas(bootSector->MFTCluster));
+    _tprintf(_T("MFT Mirror Cluster:\t\t %llu\n"), bootSector->MFTMirrCluster);
+    _tprintf(_T("Cluster/Record:\t\t\t %u\n"), bootSector->clusterPerRecord);
+    _tprintf(_T("Cluster/Block:\t\t\t %u\n"), bootSector->clusterPerBlock);
+    _tprintf(_T("Serial Number:\t\t\t %llX\n"), bootSector->serialNumber);
+    _tprintf(_T("Check sum:\t\t\t %lX\n"), bootSector->checkSum);
+    _tprintf(_T("End Marker:\t\t\t %X\n"), bootSector->endMarker);
+    _tprintf(_T("Cluster Size:\t\t\t %s\n"), addCommas(clusterSize));
+    _tprintf(_T("Record Size:\t\t\t %s\n"), addCommas(recordSize));
+    _tprintf(_T("Drive Size:\t\t\t %s\n"), addCommas(driveSize));
 }
 
-void printMasterBootRecord(MasterBootRecordPtr mbr){
+void printMasterBootRecord(const TCHAR *text, MasterBootRecordPtr mbr){
     for (int i=0; i<=3; i++){
-        _tprintf(_T("\nPartition Number: %d\n"), i);
-        if (mbr->partionTable[i].bootType == 0x80) {
-            _tprintf(_T("Boot type:\t\t\t 0x%X (bootable)\n"),mbr->partionTable[i].bootType&0xFF);
-        } else {
-            _tprintf(_T("Boot type:\t\t\t 0x%X (not bootable)\n"),mbr->partionTable[i].bootType&0xFF);
-        }
-        _tprintf(_T("Begin Head:\t\t\t %d\n"),mbr->partionTable[i].beginHead&0xFF);
-        _tprintf(_T("Begin Sector Cylinder:\t\t %s\n"), addCommas(mbr->partionTable[i].beginSectorCylinder));
-        if (mbr->partionTable[i].fileSystem==0x07){
-            _tprintf(_T("File System:\t\t\t 0x%02X (NTFS,HPFS,IFS,exFAT, or QNX)\n"), mbr->partionTable[i].fileSystem&0xFF);
-        } else if (mbr->partionTable[i].fileSystem==0x05){
-            _tprintf(_T("File System:\t\t\t 0x%02X (Extended partition)\n"), mbr->partionTable[i].fileSystem&0xFF);
-        } else if (mbr->partionTable[i].fileSystem==0x00){
-            _tprintf(_T("File System:\t\t\t 0x%02X (not a valid partition)\n"), mbr->partionTable[i].fileSystem&0xFF);
-        } else {
-            _tprintf(_T("File System:\t\t\t 0x%02X (Unknown)\n"), mbr->partionTable[i].fileSystem&0xFF);
-        }
-        _tprintf(_T("End Head:\t\t\t %d\n"),mbr->partionTable[i].endHead&0xFF);
-        _tprintf(_T("End Sector Cylinder:\t\t %s\n"), addCommas(mbr->partionTable[i].endSectorCylinder));
-        _tprintf(_T("Begin Absolute Sector:\t\t %s\n"), addCommas(mbr->partionTable[i].beginSector));
-        _tprintf(_T("End absolute Sector:\t\t %s\n"), addCommas(mbr->partionTable[i].endSector));
+        if (mbr->partionTable[i].fileSystem!=0x00){
+            _tprintf(_T("\n%s %d\n"),text, i);
+            if (mbr->partionTable[i].bootType == 0x80) {
+                _tprintf(_T("Boot type:\t\t\t 0x%X (bootable)\n"),mbr->partionTable[i].bootType&0xFF);
+            } else {
+                _tprintf(_T("Boot type:\t\t\t 0x%X (not bootable)\n"),mbr->partionTable[i].bootType&0xFF);
+            }
+            _tprintf(_T("Begin Head:\t\t\t %d\n"),mbr->partionTable[i].beginHead&0xFF);
+            _tprintf(_T("Begin Sector Cylinder:\t\t %s\n"), addCommas(mbr->partionTable[i].beginSectorCylinder));
+            if (mbr->partionTable[i].fileSystem==0x07){
+                _tprintf(_T("File System:\t\t\t 0x%02X (NTFS,HPFS,IFS,exFAT, or QNX)\n"), mbr->partionTable[i].fileSystem&0xFF);
+            } else if (mbr->partionTable[i].fileSystem==0x83){
+                _tprintf(_T("File System:\t\t\t 0x%02X (Linux Swap)\n"), mbr->partionTable[i].fileSystem&0xFF);
+            } else if (mbr->partionTable[i].fileSystem==0x05){
+                _tprintf(_T("File System:\t\t\t 0x%02X (Extended partition)\n"), mbr->partionTable[i].fileSystem&0xFF);
+            } else if (mbr->partionTable[i].fileSystem==0x00){
+                _tprintf(_T("File System:\t\t\t 0x%02X (not a valid partition)\n"), mbr->partionTable[i].fileSystem&0xFF);
+            } else {
+                _tprintf(_T("File System:\t\t\t 0x%02X (Unknown)\n"), mbr->partionTable[i].fileSystem&0xFF);
+            }
+            _tprintf(_T("End Head:\t\t\t %d\n"),mbr->partionTable[i].endHead&0xFF);
+            _tprintf(_T("End Sector Cylinder:\t\t %s\n"), addCommas(mbr->partionTable[i].endSectorCylinder));
+            _tprintf(_T("Begin Absolute Sector:\t\t %s\n"), addCommas(mbr->partionTable[i].beginSector));
+            _tprintf(_T("End absolute Sector:\t\t %s\n"), addCommas(mbr->partionTable[i].endSector));
 
-        ULONGLONG beginByteOffset = (ULONGLONG)mbr->partionTable[i].beginSector*512LL;
-        ULONGLONG endByteOffset = (ULONGLONG)mbr->partionTable[i].endSector*512LL;
-        ULONGLONG sizeOfPartition = endByteOffset - beginByteOffset;
-        _tprintf(_T("Begin Byte offset:\t\t %s\n"), addCommas(beginByteOffset));
-        _tprintf(_T("End Byte offset:\t\t %s\n"), addCommas(endByteOffset));
-        if (mbr->partionTable[i].fileSystem!=0x05){
-            _tprintf(_T("Size           :\t\t %s\n"), addCommas(sizeOfPartition));
+            ULONGLONG beginByteOffset = (ULONGLONG)mbr->partionTable[i].beginSector*512LL;
+            ULONGLONG endByteOffset = (ULONGLONG)mbr->partionTable[i].endSector*512LL;
+            ULONGLONG sizeOfPartition = endByteOffset - beginByteOffset;
+            _tprintf(_T("Begin Byte offset:\t\t %s\n"), addCommas(beginByteOffset));
+            _tprintf(_T("End Byte offset:\t\t %s\n"), addCommas(endByteOffset));
+            if (mbr->partionTable[i].fileSystem!=0x05){
+            _tprintf(_T("Size:\t\t\t\t %s\n"), addCommas(sizeOfPartition));
+            }
+        }
+    }
+}
+
+LONGLONG seek (HANDLE fileHandle, LONGLONG distance, DWORD MoveMethod) {
+   LARGE_INTEGER li;
+   li.QuadPart = distance;
+   li.LowPart = SetFilePointer(fileHandle, li.LowPart, &li.HighPart, MoveMethod);
+   if (li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
+      li.QuadPart = -1;
+   }
+
+   return li.QuadPart;
+}
+
+void readBootSectors(HANDLE VolumeHandle, MasterBootRecordPtr mbr){
+    _tprintf(_T("\n"));
+    for (int i=0; i<=3; i++){
+        if (mbr->partionTable[i].fileSystem==0x07){
+            _tprintf(_T("\nBoot Sector for Partition Number: %d\n"), i);
+            ULONGLONG beginByteOffset = (ULONGLONG)mbr->partionTable[i].beginSector*512LL;
+            seek(VolumeHandle, beginByteOffset, FILE_BEGIN);
+            BootSector bootSector;
+            DWORD read;
+            ReadFile(VolumeHandle, &bootSector, sizeof bootSector, &read, NULL);
+            if (read != sizeof bootSector) {
+                throw _T("Failed to read boot sector");
+            }
+            printBootSector(&bootSector);
+        } else if (mbr->partionTable[i].fileSystem==0x05){
+            _tprintf(_T("\nBoot Sector for Partition Number: %d\n"), i);
+            ULONGLONG beginByteOffset = (ULONGLONG)mbr->partionTable[i].beginSector*512LL;
+            seek(VolumeHandle, beginByteOffset, FILE_BEGIN);
+            MasterBootRecord mbr;
+            DWORD read;
+            ReadFile(VolumeHandle, &mbr, sizeof mbr, &read, NULL);
+            if (read != sizeof mbr) {
+                throw _T("Failed to read boot sector");
+            }
+            printMasterBootRecord(_T("Extended Partition Number:"), &mbr);
         }
     }
 }
@@ -254,7 +302,10 @@ int __cdecl _tmain(int argc, const TCHAR *argv[]) {
         throw _T("Failed to read boot sector");
     }
 
-    printMasterBootRecord(&mbr);
+    printMasterBootRecord(_T("Partition Number:"), &mbr);
+
+    seek(VolumeHandle, 0, FILE_BEGIN);
+    readBootSectors(VolumeHandle, &mbr);
 
     CloseHandle(VolumeHandle);
     return 0;
