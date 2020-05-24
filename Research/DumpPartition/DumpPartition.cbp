@@ -90,7 +90,11 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="comma.cpp" />
+		<Unit filename="fileio.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="main.h" />
+		<Unit filename="print.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
