@@ -2,9 +2,11 @@
 #define MAIN_H_INCLUDED
 
 #include <windows.h>
-#include <tchar.h>
+#include <winioctl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <tchar.h>
 #include <locale.h>
 #include <tchar.h>
 #include <shellapi.h>

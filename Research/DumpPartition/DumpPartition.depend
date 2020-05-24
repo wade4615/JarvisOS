@@ -2,11 +2,13 @@
 1590263579 source:c:\projects\jarvisos\research\dumppartition\comma.cpp
 	"main.h"
 
-1590351161 c:\projects\jarvisos\research\dumppartition\main.h
+1590355508 c:\projects\jarvisos\research\dumppartition\main.h
 	<windows.h>
-	<tchar.h>
+	<winioctl.h>
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
+	<tchar.h>
 	<locale.h>
 	<tchar.h>
 	<shellapi.h>
@@ -14,9 +16,9 @@
 1590263684 source:c:\projects\jarvisos\research\dumppartition\fileio.cpp
 	"main.h"
 
-1590350898 source:c:\projects\jarvisos\research\dumppartition\print.cpp
+1590351543 source:c:\projects\jarvisos\research\dumppartition\print.cpp
 	"main.h"
 
-1590351287 source:c:\projects\jarvisos\research\dumppartition\main.cpp
+1590351948 source:c:\projects\jarvisos\research\dumppartition\main.cpp
 	"main.h"
 

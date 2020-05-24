@@ -34,7 +34,7 @@ void readAndPrintExtendedPartion(HANDLE VolumeHandle, ULONGLONG offset, TCHAR * 
     DWORD read;
 
     seek(VolumeHandle, offset, FILE_BEGIN);
-    ReadFile(VolumeHandle, &partitionData, sizeof partitionData, &read, NULL);
+    ReadFile(VolumeHandle, &partitionData, sizeof(partitionData), &read, NULL);
     if (read != sizeof partitionData) {
         _ftprintf(stderr, _T("read in %ld instead of %d in readAndPrintPartition (%lx)\n"), read, sizeof partitionData, GetLastError());
         exit(1);
@@ -59,7 +59,7 @@ void readAndPrintPartion(HANDLE VolumeHandle, ULONGLONG offset, TCHAR * header){
 }
 
 int __cdecl _tmain(int argc, const TCHAR *argv[]) {
-    TCHAR VolumeName[] = _T("\\\\.\\PhysicalDrive0");
+    TCHAR VolumeName[] = _T("\\\\.\\PhysicalDrive1");
 
     HANDLE VolumeHandle;
 
