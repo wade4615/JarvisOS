@@ -1,0 +1,10 @@
+
+include_directories(BEFORE ${JARVISOS_SOURCE_DIR}/include/lcarsos/wine)
+add_executable(symdump symdump.c)
+set_module_type(symdump win32cui)
+target_link_libraries(symdump wine)
+add_importlibs(symdump dbghelp shlwapi msvcrt kernel32 ntdll)
+if(NOT MSVC)
+    add_target_compile_flags(symdump "-Wno-unused-but-set-variable")
+endif()
+add_cd_file(TARGET symdump DESTINATION jarvisos/system32 FOR all)

@@ -1,0 +1,14 @@
+
+include_directories(${JARVISOS_SOURCE_DIR}/src/drivers/storage/class)
+
+list(APPEND SOURCE
+    cdrom.c
+    findscsi.c
+    precomp.h)
+
+add_library(cdrom MODULE ${SOURCE} cdrom.rc)
+set_module_type(cdrom kernelmodedriver)
+add_importlibs(cdrom class2 scsiport ntoskrnl hal)
+add_pch(cdrom precomp.h SOURCE)
+add_cd_file(TARGET cdrom DESTINATION jarvisos/system32/drivers NO_CAB FOR all)
+add_registry_inf(cdrom_reg.inf)

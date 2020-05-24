@@ -1,0 +1,13 @@
+C:/projects/JarvisOS.New/output-MinGW-i386/CMakeFiles/rebuild_cache.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/CMakeFiles/edit_cache.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/hosttools/tools/CMakeFiles/rebuild_cache.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/hosttools/tools/CMakeFiles/edit_cache.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/hosttools/tools/format/CMakeFiles/rebuild_cache.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/hosttools/tools/format/CMakeFiles/format.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/hosttools/tools/format/CMakeFiles/edit_cache.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/hosttools/tools/obj2bin/CMakeFiles/rebuild_cache.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/hosttools/tools/obj2bin/CMakeFiles/obj2bin.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/hosttools/tools/obj2bin/CMakeFiles/edit_cache.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/source/ntoskrnl/CMakeFiles/rebuild_cache.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/source/ntoskrnl/CMakeFiles/ntoskrnl.dir
+C:/projects/JarvisOS.New/output-MinGW-i386/source/ntoskrnl/CMakeFiles/edit_cache.dir
