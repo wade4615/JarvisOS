@@ -96,14 +96,14 @@ void dumpDrive(TCHAR *VolumeName){
     seek(VolumeHandle, 0, FILE_BEGIN);
     ReadFile(VolumeHandle, &partitionData, sizeof partitionData, &read, NULL);
     if (read != sizeof partitionData) {
-        exitWithLastError(_T("read in %ld instead of %d in readAndPrintPartition (%lx)\n"), read, sizeof partitionData, GetLastError());
+        exitWithLastError(_T("read in %ld instead of %d in dumpDrive (%lx)\n"), read, sizeof partitionData, GetLastError());
     }
     _tprintf(_T("\nVolume %s\n"),VolumeName);
-    handleMasterBootRecord(VolumeHandle, 0, (TCHAR *)_T("Partition Number:"), &partitionData);
+    handleMasterBootRecord(VolumeHandle, 0, (TCHAR *)_T("Master Boot Record Partition Number:"), &partitionData);
     CloseHandle(VolumeHandle);
 }
 
-int __cdecl _tmain(int argc, const TCHAR *argv[]) {
+int _tmain(int argc, const TCHAR *argv[]) {
     _tsetlocale(LC_NUMERIC, _T(""));
     dumpDrive(_T("\\\\.\\PhysicalDrive0"));
     dumpDrive(_T("\\\\.\\PhysicalDrive1"));

@@ -12,8 +12,8 @@ void printFAT32BootSector(FAT32BootSectorPtr bootSector){
     _tprintf(_T("Sectors/track:\t\t\t %u\n"), bootSector->sectorPerTrack);
     _tprintf(_T("Heads:\t\t\t\t %u\n"), bootSector->headNumber);
     _tprintf(_T("Hidden Sectors:\t\t\t %lu\n"), bootSector->hiddenSector);
-    _tprintf(_T("Total Sectors:\t\t\t %lu\n"), bootSector->totalSectors);
-    _tprintf(_T("Sectors/FAT:\t\t\t %lu\n"), bootSector->sectorsPerFAT);
+    _tprintf(_T("Total Sectors:\t\t\t %s\n"), addCommas(bootSector->totalSectors));
+    _tprintf(_T("Sectors/FAT:\t\t\t %s\n"), addCommas(bootSector->sectorsPerFAT));
     _tprintf(_T("Flags:\t\t\t\t %04X\n"), bootSector->flags);
     _tprintf(_T("FAT32 Version:\t\t\t %u\n"), bootSector->fat32Version);
     _tprintf(_T("Root Cluster:\t\t\t %lu\n"), bootSector->rootCluster);
@@ -77,8 +77,8 @@ void printMasterBootRecord(TCHAR *text,PartitionEntryPtr entry, int i){
             _tprintf(_T("Boot type:\t\t\t 0x%X (not bootable)\n"),entry->bootType&0xFF);
         }
         _tprintf(_T("Begin Head:\t\t\t %d\n"), entry->beginHead&0xFF);
-        int bsector = entry->beginSectorCylinder&0x3F;
-        int bcylinder = entry->beginSectorCylinder<<6;
+        int bsector = HI(entry->beginSectorCylinder)|((LO(entry->beginSectorCylinder)&0xC0)>>2);
+        int bcylinder = entry->beginSectorCylinder&0x3F;
         _tprintf(_T("Begin sector :\t\t\t %u\n"), bsector);
         _tprintf(_T("Begin cylinder :\t\t %u\n"), bcylinder);
         if (entry->fileSystem==0x07){
@@ -100,8 +100,8 @@ void printMasterBootRecord(TCHAR *text,PartitionEntryPtr entry, int i){
         }
         ULONGLONG endSector = (ULONGLONG)entry->lbaStart + (ULONGLONG)entry->partitionSize;
         _tprintf(_T("End Head:\t\t\t %d\n"), entry->endHead&0xFF);
-        int esector = entry->endSectorCylinder&0x3F;
-        int ecylinder = entry->endSectorCylinder<<6;
+        int esector = HI(entry->endSectorCylinder)|((LO(entry->endSectorCylinder)&0xC0)>>2);
+        int ecylinder = entry->endSectorCylinder&0x3F;
         _tprintf(_T("End sector :\t\t\t %u\n"), esector);
         _tprintf(_T("End cylinder :\t\t\t %u\n"), ecylinder);
         _tprintf(_T("Begin Absolute Sector:\t\t %s\n"), addCommas(entry->lbaStart));

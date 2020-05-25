@@ -14,7 +14,7 @@ TCHAR *addCommas(ULONGLONG f) {
 
     if (dot){              // Yes
         dst = commas+MAX-_tcslen(dot)-1; // set dest to allow the fractional part to fit
-        strcpy(dst, dot);               // copy that part
+        _tcscpy(dst, dot);               // copy that part
         *dot = 0;       // 'cut' that frac part in tmp
         src = --dot;    // point to last non frac char in tmp
         dst--;          // point to previous 'free' char in dest
@@ -23,7 +23,7 @@ TCHAR *addCommas(ULONGLONG f) {
         dst = commas+MAX-1;         // dst is last char of commas
     }
 
-    int len = strlen(tmp);        // len is the mantissa size
+    int len = _tcslen(tmp);        // len is the mantissa size
     int cnt = 0;                  // char counter
 
     do {

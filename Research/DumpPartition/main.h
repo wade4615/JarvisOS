@@ -11,6 +11,9 @@
 #include <tchar.h>
 #include <shellapi.h>
 
+#define LO(x)   ((x) & 0xFF)
+#define HI(x)   (((x)>>8) & 0xFF)
+
 #pragma pack(push, 1)
 typedef struct _PartitionEntry {
     BYTE bootType;
