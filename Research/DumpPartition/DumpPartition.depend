@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1590407667 source:c:\projects\jarvisos\research\dumppartition\comma.cpp
+1590421545 source:c:\projects\jarvisos\research\dumppartition\comma.cpp
 	"main.h"
 
-1590412681 c:\projects\jarvisos\research\dumppartition\main.h
+1590421715 c:\projects\jarvisos\research\dumppartition\main.h
 	<windows.h>
 	<winioctl.h>
 	<stdio.h>
@@ -16,7 +16,7 @@
 1590406030 source:c:\projects\jarvisos\research\dumppartition\fileio.cpp
 	"main.h"
 
-1590418143 source:c:\projects\jarvisos\research\dumppartition\print.cpp
+1590418351 source:c:\projects\jarvisos\research\dumppartition\print.cpp
 	"main.h"
 
 1590408143 source:c:\projects\jarvisos\research\dumppartition\main.cpp

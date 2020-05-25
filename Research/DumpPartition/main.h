@@ -163,6 +163,8 @@ typedef struct _AttributeRecord {
 }AttributeRecord, *AttributeRecordPtr;
 #pragma pack(pop)
 
+void exitWithLastError(TCHAR *format,...);
+
 void readAndPrintFAT32BootSector(HANDLE VolumeHandle, ULONGLONG offset, int i);
 void readAndPrintNTFSBootSector(HANDLE VolumeHandle, ULONGLONG offset);
 void handleMasterBootRecord(HANDLE VolumeHandle, ULONGLONG start, TCHAR *text, MasterBootRecordPtr mbr);

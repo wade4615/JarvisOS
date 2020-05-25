@@ -1,12 +1,35 @@
 #include "main.h"
 
+void exitWithLastError(TCHAR *format,...) {
+    LPVOID lpMsgBuf;
+    DWORD lastError = GetLastError();
+
+    va_list args;
+    va_start(args, format);
+
+    if (lastError) {
+        FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER |
+        FORMAT_MESSAGE_FROM_SYSTEM |
+        FORMAT_MESSAGE_IGNORE_INSERTS, NULL, lastError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &lpMsgBuf, 0, NULL);
+        _ftprintf(stderr, _T("\n"));
+        _vftprintf(stderr, format, args);
+        _ftprintf(stderr, _T("GetLastError()=%d: %s\n"), lastError, lpMsgBuf);
+    } else {
+        _ftprintf(stderr, _T("\n"));
+        _vftprintf(stderr, format, args);
+    }
+    va_end(args);
+    LocalFree(lpMsgBuf);
+    exit(lastError);
+}
+
 HANDLE openVolume(TCHAR *VolumeName){
     DWORD read;
 
     HANDLE VolumeHandle = CreateFile(VolumeName, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_FLAG_NO_BUFFERING, NULL);
     if (VolumeHandle == INVALID_HANDLE_VALUE) {
-        _ftprintf(stderr, _T("Failed opening the volume '%s' (%lx)\n"), VolumeName, GetLastError());
-        exit(1);
+        exitWithLastError(_T("Failed opening the volume '%s'\n"),VolumeName);
     }
     return VolumeHandle;
 }
@@ -18,8 +41,7 @@ void readAndPrintNTFSBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
     seek(VolumeHandle, offset, FILE_BEGIN);
     ReadFile(VolumeHandle, &bootSector, sizeof bootSector, &read, NULL);
     if (read != sizeof bootSector) {
-        _ftprintf(stderr, _T("Failed to read boot sector (%lx)\n"), GetLastError());
-        exit(1);
+        exitWithLastError(_T("Failed to read boot sector (%lx)\n"), GetLastError());
     }
     _tprintf(_T("\nBoot sector for partition %d\n"), i);
     printNTFSBootSector(&bootSector);
@@ -32,8 +54,7 @@ void readAndPrintFAT32BootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
     seek(VolumeHandle, offset, FILE_BEGIN);
     ReadFile(VolumeHandle, &bootSector, sizeof(bootSector), &read, NULL);
     if (read != sizeof(bootSector)) {
-        _ftprintf(stderr, _T("Failed to read fat32 boot sector (bytes=%d) (%lx)\n"), sizeof(bootSector), GetLastError());
-        exit(1);
+        exitWithLastError(_T("Failed to read fat32 boot sector (bytes=%d) (%lx)\n"), sizeof(bootSector), GetLastError());
     }
     _tprintf(_T("\nBoot sector for partition %d\n"), i);
     printFAT32BootSector(&bootSector);
@@ -46,8 +67,7 @@ void readAndPrintMasterBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
     seek(VolumeHandle, offset, FILE_BEGIN);
     ReadFile(VolumeHandle, &bootSector1, sizeof bootSector1, &read, NULL);
     if (read != sizeof bootSector1) {
-        _ftprintf(stderr, _T("Failed to read boot sector (%lx)\n"), GetLastError());
-        exit(1);
+        exitWithLastError(_T("Failed to read boot sector (%lx)\n"), GetLastError());
     }
     _tprintf(_T("\nBoot sector for partition %d\n"), i);
     handleMasterBootRecord(VolumeHandle, offset, _T("Extended Partition Master Boot Record"), &bootSector1);
@@ -76,8 +96,7 @@ void dumpDrive(TCHAR *VolumeName){
     seek(VolumeHandle, 0, FILE_BEGIN);
     ReadFile(VolumeHandle, &partitionData, sizeof partitionData, &read, NULL);
     if (read != sizeof partitionData) {
-        _ftprintf(stderr, _T("read in %ld instead of %d in readAndPrintPartition (%lx)\n"), read, sizeof partitionData, GetLastError());
-        exit(1);
+        exitWithLastError(_T("read in %ld instead of %d in readAndPrintPartition (%lx)\n"), read, sizeof partitionData, GetLastError());
     }
     _tprintf(_T("\nVolume %s\n"),VolumeName);
     handleMasterBootRecord(VolumeHandle, 0, (TCHAR *)_T("Partition Number:"), &partitionData);
@@ -88,5 +107,6 @@ int __cdecl _tmain(int argc, const TCHAR *argv[]) {
     _tsetlocale(LC_NUMERIC, _T(""));
     dumpDrive(_T("\\\\.\\PhysicalDrive0"));
     dumpDrive(_T("\\\\.\\PhysicalDrive1"));
+    dumpDrive(_T("\\\\.\\PhysicalDrive2"));
     return 0;
 }

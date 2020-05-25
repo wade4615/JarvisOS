@@ -1,5 +1,5 @@
 //==================================
-// PEDUMP - (c) Chris Wade 2020
+// Format - (c) Chris Wade 2020
 // Port of original to gcc for windows
 // FILE: Format.C
 //==================================
@@ -538,7 +538,7 @@ int format_volume(char vol, FormatParamsPtr params) {
 }
 
 void usage(void) {
-    printf("Usage Fat32Format X:\n");
+    printf("Usage Format X:\n");
     printf("Erase all data on disk X:, format it for FAT32\n");
     printf("It is also possible to specify a cluster size for the disk, e.g\n");
     printf("Fat32Format -c1 X:  - use 1 sector per cluster ( max size 137GB for 512 bytes per sect) \n");
