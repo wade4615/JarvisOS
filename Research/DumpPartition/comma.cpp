@@ -1,4 +1,5 @@
 #include "main.h"
+
 #define DOT     _T('.')
 #define COMMA   _T(',')
 #define MAX     50

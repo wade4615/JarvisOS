@@ -59,7 +59,7 @@ typedef struct _NTFSBootSector {
 typedef struct _FAT32BootSector {
     // Common fields.
     BYTE sJmpBoot[3];
-    BYTE sOEMName[8];
+    BYTE oemID[8];
     WORD wBytsPerSec;
     BYTE bSecPerClus;
     WORD wRsvdSecCnt;
@@ -163,13 +163,15 @@ typedef struct _AttributeRecord {
 }AttributeRecord, *AttributeRecordPtr;
 #pragma pack(pop)
 
-void readAndPrintExtendedPartion(HANDLE VolumeHandle, ULONGLONG offset, TCHAR * header);
-void readBootSectors(HANDLE VolumeHandle, MasterBootRecordPtr mbr);
 void readAndPrintNTFSBootSector(HANDLE VolumeHandle, ULONGLONG offset);
-void readAndPrintPartition(HANDLE VolumeHandle, ULONGLONG offset, TCHAR * header);
+void handleMasterBootRecord(HANDLE VolumeHandle, ULONGLONG start, TCHAR *text, MasterBootRecordPtr mbr);
+void dumpDrive(TCHAR *VolumeName);
+
 void printBootSector(NTFSBootSectorPtr bootSector);
-void printMasterBootRecord(const TCHAR *text, MasterBootRecordPtr mbr);
+void printMasterBootRecord(TCHAR *text,PartitionEntryPtr entry, int i);
+
 TCHAR *addCommas(ULONGLONG f);
+
 LONGLONG seek (HANDLE fileHandle, LONGLONG distance, DWORD MoveMethod);
 
 #endif // MAIN_H_INCLUDED

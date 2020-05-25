@@ -1,6 +1,17 @@
 #include "main.h"
 
-void readAndPrintNTFSBootSector(HANDLE VolumeHandle, ULONGLONG offset){
+HANDLE openVolume(TCHAR *VolumeName){
+    DWORD read;
+
+    HANDLE VolumeHandle = CreateFile(VolumeName, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_FLAG_NO_BUFFERING, NULL);
+    if (VolumeHandle == INVALID_HANDLE_VALUE) {
+        _ftprintf(stderr, _T("Failed opening the volume '%s' (%lx)\n"), VolumeName, GetLastError());
+        exit(1);
+    }
+    return VolumeHandle;
+}
+
+void readAndPrintNTFSBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
     NTFSBootSector bootSector;
     DWORD read;
 
@@ -10,68 +21,56 @@ void readAndPrintNTFSBootSector(HANDLE VolumeHandle, ULONGLONG offset){
         _ftprintf(stderr, _T("Failed to read boot sector (%lx)\n"), GetLastError());
         exit(1);
     }
+    _tprintf(_T("\nBoot sector for partition %d\n"), i);
     printBootSector(&bootSector);
 }
 
-void readBootSectors(HANDLE VolumeHandle, MasterBootRecordPtr mbr){
+void readAndPrintMasterBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
+    MasterBootRecord bootSector1;
     DWORD read;
 
-    _tprintf(_T("\n"));
+    seek(VolumeHandle, offset, FILE_BEGIN);
+    ReadFile(VolumeHandle, &bootSector1, sizeof bootSector1, &read, NULL);
+    if (read != sizeof bootSector1) {
+        _ftprintf(stderr, _T("Failed to read boot sector (%lx)\n"), GetLastError());
+        exit(1);
+    }
+    _tprintf(_T("\nBoot sector for partition %d\n"), i);
+    handleMasterBootRecord(VolumeHandle, offset, _T("Extended Partition Master Boot Record"), &bootSector1);
+}
+
+void handleMasterBootRecord(HANDLE VolumeHandle, ULONGLONG start, TCHAR *text, MasterBootRecordPtr mbr){
     for (int i=0; i<=3; i++){
-        ULONGLONG beginByteOffset = (ULONGLONG)mbr->partionTable[i].lbaStart*512LL;
-        if (mbr->partionTable[i].fileSystem==0x07){
-            _tprintf(_T("\nBoot Sector for Partition Number: %d\n"), i);
-            readAndPrintNTFSBootSector(VolumeHandle, beginByteOffset);
-        }else if (mbr->partionTable[i].fileSystem==0x05){
-            _tprintf(_T("\nBoot Sector for Extended Partition Number: %d\n"), i);
-            readAndPrintExtendedPartion(VolumeHandle, beginByteOffset, _T("Extended Partition Number:"));
+        printMasterBootRecord(text, &mbr->partionTable[i], i);
+        ULONGLONG offset = start + mbr->partionTable[i].lbaStart*512LL;
+        if (mbr->partionTable[i].fileSystem == 0x07){
+            readAndPrintNTFSBootSector(VolumeHandle, offset, i);
+        } else if (mbr->partionTable[i].fileSystem == 0x05){
+            readAndPrintMasterBootSector(VolumeHandle, offset, i);
         }
     }
 }
 
-void readAndPrintExtendedPartion(HANDLE VolumeHandle, ULONGLONG offset, TCHAR * header){
+void dumpDrive(TCHAR *VolumeName){
+    HANDLE VolumeHandle;
     MasterBootRecord partitionData;
     DWORD read;
 
-    seek(VolumeHandle, offset, FILE_BEGIN);
-    ReadFile(VolumeHandle, &partitionData, sizeof(partitionData), &read, NULL);
+    VolumeHandle = openVolume(VolumeName);
+    seek(VolumeHandle, 0, FILE_BEGIN);
+    ReadFile(VolumeHandle, &partitionData, sizeof partitionData, &read, NULL);
     if (read != sizeof partitionData) {
         _ftprintf(stderr, _T("read in %ld instead of %d in readAndPrintPartition (%lx)\n"), read, sizeof partitionData, GetLastError());
         exit(1);
     }
-    printMasterBootRecord(header, &partitionData);
-//    seek(VolumeHandle, offset, FILE_BEGIN);
-//    readBootSectors(VolumeHandle, &partitionData);
-}
-
-void readAndPrintPartion(HANDLE VolumeHandle, ULONGLONG offset, TCHAR * header){
-    MasterBootRecord partitionData;
-    DWORD read;
-
-    ReadFile(VolumeHandle, &partitionData, sizeof partitionData, &read, NULL);
-    if (read != sizeof partitionData) {
-        _ftprintf(stderr, _T("read in %ld instead of %d in readAndPrintPartion (%lx)\n"), read, sizeof partitionData, GetLastError());
-        exit(1);
-    }
-    printMasterBootRecord(header, &partitionData);
-    seek(VolumeHandle, offset, FILE_BEGIN);
-    readBootSectors(VolumeHandle, &partitionData);
+    _tprintf(_T("\nVolume %s\n"),VolumeName);
+    handleMasterBootRecord(VolumeHandle, 0, (TCHAR *)_T("Partition Number:"), &partitionData);
+    CloseHandle(VolumeHandle);
 }
 
 int __cdecl _tmain(int argc, const TCHAR *argv[]) {
-    TCHAR VolumeName[] = _T("\\\\.\\PhysicalDrive1");
-
-    HANDLE VolumeHandle;
-
     _tsetlocale(LC_NUMERIC, _T(""));
-
-    VolumeHandle = CreateFile(VolumeName, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_FLAG_NO_BUFFERING, NULL);
-    if (VolumeHandle == INVALID_HANDLE_VALUE) {
-        _ftprintf(stderr, _T("Failed opening the volume '%s' (%lx)\n"), VolumeName, GetLastError());
-        return 1;
-    }
-    readAndPrintPartion(VolumeHandle, 0, _T("Partition Number:"));
-    CloseHandle(VolumeHandle);
-
+    dumpDrive(_T("\\\\.\\PhysicalDrive0"));
+    dumpDrive(_T("\\\\.\\PhysicalDrive1"));
     return 0;
 }
