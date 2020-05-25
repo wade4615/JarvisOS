@@ -22,7 +22,21 @@ void readAndPrintNTFSBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
         exit(1);
     }
     _tprintf(_T("\nBoot sector for partition %d\n"), i);
-    printBootSector(&bootSector);
+    printNTFSBootSector(&bootSector);
+}
+
+void readAndPrintFAT32BootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
+    FAT32BootSector bootSector;
+    DWORD read;
+
+    seek(VolumeHandle, offset, FILE_BEGIN);
+    ReadFile(VolumeHandle, &bootSector, sizeof(bootSector), &read, NULL);
+    if (read != sizeof(bootSector)) {
+        _ftprintf(stderr, _T("Failed to read fat32 boot sector (bytes=%d) (%lx)\n"), sizeof(bootSector), GetLastError());
+        exit(1);
+    }
+    _tprintf(_T("\nBoot sector for partition %d\n"), i);
+    printFAT32BootSector(&bootSector);
 }
 
 void readAndPrintMasterBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
@@ -45,6 +59,8 @@ void handleMasterBootRecord(HANDLE VolumeHandle, ULONGLONG start, TCHAR *text, M
         ULONGLONG offset = start + mbr->partionTable[i].lbaStart*512LL;
         if (mbr->partionTable[i].fileSystem == 0x07){
             readAndPrintNTFSBootSector(VolumeHandle, offset, i);
+        } else if (mbr->partionTable[i].fileSystem == 0x0C){
+            readAndPrintFAT32BootSector(VolumeHandle, offset, i);
         } else if (mbr->partionTable[i].fileSystem == 0x05){
             readAndPrintMasterBootSector(VolumeHandle, offset, i);
         }

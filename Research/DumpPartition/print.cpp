@@ -1,13 +1,49 @@
 #include "main.h"
 
-void printBootSector(NTFSBootSectorPtr bootSector){
+void printFAT32BootSector(FAT32BootSectorPtr bootSector){
+    _tprintf(_T("OEM ID:\t\t\t\t \"%.8s\"\n"), bootSector->oemID);
+    _tprintf(_T("Byte/Sector:\t\t\t %u\n"), bootSector->bytePerSector);
+    _tprintf(_T("Sector/Cluster:\t\t\t %u\n"), bootSector->sectorPerCluster);
+    _tprintf(_T("Number of FATS:\t\t\t %u\n"), bootSector->numberOfFATS);
+    _tprintf(_T("Max Root Dir Entries:\t\t %u\n"), bootSector->maxRootDirEntries);
+    _tprintf(_T("Sectors in Partition FAT16:\t %u\n"), bootSector->totalSectors16);
+    _tprintf(_T("Media:\t\t\t\t %02X\n"), bootSector->bMedia);
+    _tprintf(_T("Sectors in Partition FAT32:\t %u\n"), bootSector->totalSectors32);
+    _tprintf(_T("Sectors/track:\t\t\t %u\n"), bootSector->sectorPerTrack);
+    _tprintf(_T("Heads:\t\t\t\t %u\n"), bootSector->headNumber);
+    _tprintf(_T("Hidden Sectors:\t\t\t %lu\n"), bootSector->hiddenSector);
+    _tprintf(_T("Total Sectors:\t\t\t %lu\n"), bootSector->totalSectors);
+    _tprintf(_T("Sectors/FAT:\t\t\t %lu\n"), bootSector->sectorsPerFAT);
+    _tprintf(_T("Flags:\t\t\t\t %04X\n"), bootSector->flags);
+    _tprintf(_T("FAT32 Version:\t\t\t %u\n"), bootSector->fat32Version);
+    _tprintf(_T("Root Cluster:\t\t\t %lu\n"), bootSector->rootCluster);
+    _tprintf(_T("FS Info Cluster:\t\t %lu\n"), bootSector->fsInfoCluster);
+    _tprintf(_T("Backup Boot Sector:\t\t %u\n"), bootSector->backupBootSector);
+    _tprintf(_T("Drive Number:\t\t\t %X\n"), bootSector->driveNumber);
+    _tprintf(_T("Extended Signature:\t\t %X\n"), bootSector->extendedSignature);
+    _tprintf(_T("Volume ID:\t\t\t %08lX\n"), bootSector->dBS_VolID);
+    _tprintf(_T("Volume Name:\t\t\t \"%.11s\"\n"), bootSector->volumeName);
+    _tprintf(_T("FAT Name:\t\t\t \"%.8s\"\n"), bootSector->FATName);
+    _tprintf(_T("End Marker:\t\t\t %04X\n"), bootSector->endMarker);
+    DWORD clusterSize = bootSector->bytePerSector * bootSector->sectorPerCluster;
+    _tprintf(_T("Cluster Size:\t\t\t %s\n"), addCommas(clusterSize));
+    ULONGLONG driveSize = (ULONGLONG)bootSector->totalSectors * 512LL;
+    double sizeInGB = (driveSize)/(1024LL*1024LL);
+    if (sizeInGB<1024.0){
+        _tprintf(_T("Drive Size:\t\t\t %s (%4.2lf MB)\n"), addCommas(driveSize), sizeInGB);
+    } else{
+        _tprintf(_T("Drive Size:\t\t\t %s (%4.2lf GB)\n"), addCommas(driveSize), sizeInGB/1024LL);
+    }
+}
+
+void printNTFSBootSector(NTFSBootSectorPtr bootSector){
     DWORD sectorSize = bootSector->bytePerSector;
     DWORD clusterSize = bootSector->bytePerSector * bootSector->sectorPerCluster;
     DWORD recordSize = bootSector->clusterPerRecord >= 0 ? bootSector->clusterPerRecord * clusterSize : 1 << -bootSector->clusterPerRecord;
     LONGLONG totalCluster = bootSector->totalSector / bootSector->sectorPerCluster;
     LONGLONG driveSize = bootSector->totalSector * bootSector->bytePerSector;
 
-    _tprintf(_T("OEM ID:\t\t\t\t \"%s\"\n"), bootSector->oemID);
+    _tprintf(_T("OEM ID:\t\t\t\t \"%.8s\"\n"), bootSector->oemID);
     _tprintf(_T("Byte/Sector:\t\t\t %u\n"), bootSector->bytePerSector);
     _tprintf(_T("Sector/Cluster:\t\t\t %u\n"), bootSector->sectorPerCluster);
     _tprintf(_T("Media descriptor:\t\t %X\n"), bootSector->mediaDescriptor);

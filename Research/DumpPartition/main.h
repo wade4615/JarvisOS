@@ -34,7 +34,7 @@ typedef struct _NTFSBootSector {
     BYTE        oemID[8];
     WORD        bytePerSector;
     BYTE        sectorPerCluster;
-    BYTE        reserved[2];
+    WORD        reserved;
     BYTE        zero1[3];
     BYTE        unused1[2];
     BYTE        mediaDescriptor;
@@ -57,35 +57,35 @@ typedef struct _NTFSBootSector {
 } NTFSBootSector, *NTFSBootSectorPtr;
 
 typedef struct _FAT32BootSector {
-    // Common fields.
-    BYTE sJmpBoot[3];
+    BYTE jump[3];
     BYTE oemID[8];
-    WORD wBytsPerSec;
-    BYTE bSecPerClus;
-    WORD wRsvdSecCnt;
-    BYTE bNumFATs;
-    WORD wRootEntCnt;
-    WORD wTotSec16; // if zero, use dTotSec32 instead
+    WORD bytePerSector;
+    BYTE sectorPerCluster;
+    WORD reserved1;
+    BYTE numberOfFATS;
+    WORD maxRootDirEntries;
+    WORD totalSectors16;
     BYTE bMedia;
-    WORD wFATSz16;
-    WORD wSecPerTrk;
-    WORD wNumHeads;
-    DWORD dHiddSec;
-    DWORD dTotSec32;
-    // Fat 32/16 only
-    DWORD dFATSz32;
-    WORD wExtFlags;
-    WORD wFSVer;
-    DWORD dRootClus;
-    WORD wFSInfo;
-    WORD wBkBootSec;
-    BYTE Reserved[12];
-    BYTE bDrvNum;
+    WORD totalSectors32;
+    WORD sectorPerTrack;
+    WORD headNumber;
+    DWORD hiddenSector;
+    DWORD totalSectors;
+    DWORD sectorsPerFAT;
+    WORD flags;
+    WORD fat32Version;
+    DWORD rootCluster;
+    WORD fsInfoCluster;
+    WORD backupBootSector;
+    BYTE Reserved2[12];
+    BYTE driveNumber;
     BYTE Reserved1;
-    BYTE bBootSig; // == 0x29 if next three fields are ok
+    BYTE extendedSignature;
     DWORD dBS_VolID;
-    BYTE sVolLab[11];
-    BYTE sBS_FilSysType[8];
+    BYTE volumeName[11];
+    BYTE FATName[8];
+    BYTE code[420];
+    WORD endMarker;
 } FAT32BootSector, *FAT32BootSectorPtr;
 
 typedef struct _RecordHeader {
@@ -163,11 +163,13 @@ typedef struct _AttributeRecord {
 }AttributeRecord, *AttributeRecordPtr;
 #pragma pack(pop)
 
+void readAndPrintFAT32BootSector(HANDLE VolumeHandle, ULONGLONG offset, int i);
 void readAndPrintNTFSBootSector(HANDLE VolumeHandle, ULONGLONG offset);
 void handleMasterBootRecord(HANDLE VolumeHandle, ULONGLONG start, TCHAR *text, MasterBootRecordPtr mbr);
 void dumpDrive(TCHAR *VolumeName);
 
-void printBootSector(NTFSBootSectorPtr bootSector);
+void printFAT32BootSector(FAT32BootSectorPtr bootSector);
+void printNTFSBootSector(NTFSBootSectorPtr bootSector);
 void printMasterBootRecord(TCHAR *text,PartitionEntryPtr entry, int i);
 
 TCHAR *addCommas(ULONGLONG f);
