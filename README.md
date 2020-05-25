@@ -1,5 +1,4 @@
 # JarvisOS
-
 - Build Environment
 	- ROSBE 2.20 (**R**eact**OS** **B**uild **E**nvironment)
 		- Has 32 and 64 bit Mingw gcc
