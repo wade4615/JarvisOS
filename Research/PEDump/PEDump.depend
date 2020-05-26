@@ -100,7 +100,7 @@
 	"extrnvar.h"
 	"resdump.h"
 
-1590457198 c:\projects\jarvisos\research\pedump\pedump.h
+1590519856 c:\projects\jarvisos\research\pedump\pedump.h
 	<windows.h>
 	<winioctl.h>
 	<stdio.h>
@@ -110,4 +110,5 @@
 	<locale.h>
 	<tchar.h>
 	<shellapi.h>
+	<time.h>
 

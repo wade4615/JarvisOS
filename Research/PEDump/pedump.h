@@ -10,8 +10,21 @@
 #include <locale.h>
 #include <tchar.h>
 #include <shellapi.h>
+#include <time.h>
 
 #define MakePtr(cast, ptr, addValue) ((cast)(ULONGLONG)((ULONGLONG)(ptr) + (ULONGLONG)(addValue)))
+
+typedef struct
+{
+    DWORD   flag;
+    PSTR    name;
+} DWORD_FLAG_DESCRIPTIONS;
+
+typedef struct
+{
+    WORD    flag;
+    PSTR    name;
+} WORD_FLAG_DESCRIPTIONS;
 
 extern BOOL fShowRelocations;
 extern BOOL fShowRawSectionData;
