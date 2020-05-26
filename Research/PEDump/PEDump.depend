@@ -1,0 +1,116 @@
+# depslib dependency file v1.0
+1589066393 source:c:\projects\jarvisos\research\pedump\coffsymboltable.cpp
+	<windows.h>
+	<malloc.h>
+	<stdio.h>
+	"COFFSymbolTable.h"
+
+1589066393 c:\projects\jarvisos\research\pedump\coffsymboltable.h
+
+1589066393 source:c:\projects\jarvisos\research\pedump\dbgdump.cpp
+	<windows.h>
+	<stdio.h>
+	<time.h>
+	"common.h"
+	"COFFSymbolTable.h"
+	"SymbolTableSupport.h"
+	"extrnvar.h"
+	"dbgdump.h"
+
+1590454667 c:\projects\jarvisos\research\pedump\common.h
+
+1589066393 c:\projects\jarvisos\research\pedump\symboltablesupport.h
+
+1589066393 c:\projects\jarvisos\research\pedump\extrnvar.h
+
+1589066393 c:\projects\jarvisos\research\pedump\dbgdump.h
+
+1589066393 source:c:\projects\jarvisos\research\pedump\libdump.cpp
+	<windows.h>
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	<time.h>
+	"common.h"
+	"objdump.h"
+	"libdump.h"
+	"extrnvar.h"
+
+1589066393 c:\projects\jarvisos\research\pedump\objdump.h
+
+1589066393 c:\projects\jarvisos\research\pedump\libdump.h
+
+1589066393 source:c:\projects\jarvisos\research\pedump\objdump.cpp
+	<windows.h>
+	<stdio.h>
+	"common.h"
+	"SymbolTableSupport.h"
+	"COFFSymbolTable.h"
+	"extrnvar.h"
+
+1589066393 source:c:\projects\jarvisos\research\pedump\pedump.cpp
+	<windows.h>
+	<stdio.h>
+	"objdump.h"
+	"exedump.h"
+	"dbgdump.h"
+	"libdump.h"
+	"romimage.h"
+	"extrnvar.h"
+
+1589066393 c:\projects\jarvisos\research\pedump\exedump.h
+
+1589066393 c:\projects\jarvisos\research\pedump\romimage.h
+
+1589066393 source:c:\projects\jarvisos\research\pedump\romimage.cpp
+	<windows.h>
+	<stdio.h>
+	<time.h>
+	"common.h"
+	"exedump.h"
+	"COFFSymbolTable.h"
+	"extrnvar.h"
+
+1589066393 source:c:\projects\jarvisos\research\pedump\symboltablesupport.cpp
+	<windows.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<time.h>
+	"common.h"
+	"COFFSymbolTable.h"
+	"extrnvar.h"
+	"cv_dbg.h"
+
+1589066393 c:\projects\jarvisos\research\pedump\cv_dbg.h
+
+1590454476 source:c:\projects\jarvisos\research\pedump\common.cpp
+	<windows.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<time.h>
+	"common.h"
+	"symboltablesupport.h"
+	"extrnvar.h"
+
+1590454572 source:c:\projects\jarvisos\research\pedump\exedump.cpp
+	<windows.h>
+	<stdio.h>
+	<time.h>
+	"common.h"
+	"symboltablesupport.h"
+	"COFFSymbolTable.h"
+	"resdump.h"
+	"extrnvar.h"
+
+1589066393 c:\projects\jarvisos\research\pedump\resdump.h
+
+1590454616 source:c:\projects\jarvisos\research\pedump\resdump.cpp
+	<windows.h>
+	<stdio.h>
+	<time.h>
+	"common.h"
+	"extrnvar.h"
+	"resdump.h"
+
