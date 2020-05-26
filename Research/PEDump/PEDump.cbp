@@ -90,6 +90,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="exedump.cpp" />
 		<Unit filename="pedump.cpp" />
 		<Unit filename="pedump.h" />
 		<Extensions>

@@ -11,8 +11,20 @@
 #include <tchar.h>
 #include <shellapi.h>
 
+#define MakePtr(cast, ptr, addValue) ((cast)(ULONGLONG)((ULONGLONG)(ptr) + (ULONGLONG)(addValue)))
+
+extern BOOL fShowRelocations;
+extern BOOL fShowRawSectionData;
+extern BOOL fShowSymbolTable;
+extern BOOL fShowLineNumbers;
+extern BOOL fShowIATentries;
+extern BOOL fShowPDATA;
+extern BOOL fShowResources;
+
+void DumpExeFile(PIMAGE_DOS_HEADER dosHeader);
+
 void DumpFile(TCHAR * filename);
 TCHAR *ProcessCommandLine(int argc, TCHAR *argv[]);
-
+void exitWithLastError(TCHAR *format,...);
 
 #endif // PEDUMP_H_INCLUDED

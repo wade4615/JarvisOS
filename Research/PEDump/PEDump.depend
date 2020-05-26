@@ -48,15 +48,8 @@
 	"COFFSymbolTable.h"
 	"extrnvar.h"
 
-1589066393 source:c:\projects\jarvisos\research\pedump\pedump.cpp
-	<windows.h>
-	<stdio.h>
-	"objdump.h"
-	"exedump.h"
-	"dbgdump.h"
-	"libdump.h"
-	"romimage.h"
-	"extrnvar.h"
+1590457100 source:c:\projects\jarvisos\research\pedump\pedump.cpp
+	"pedump.h"
 
 1589066393 c:\projects\jarvisos\research\pedump\exedump.h
 
@@ -94,15 +87,8 @@
 	"symboltablesupport.h"
 	"extrnvar.h"
 
-1590454572 source:c:\projects\jarvisos\research\pedump\exedump.cpp
-	<windows.h>
-	<stdio.h>
-	<time.h>
-	"common.h"
-	"symboltablesupport.h"
-	"COFFSymbolTable.h"
-	"resdump.h"
-	"extrnvar.h"
+1590457100 source:c:\projects\jarvisos\research\pedump\exedump.cpp
+	"pedump.h"
 
 1589066393 c:\projects\jarvisos\research\pedump\resdump.h
 
@@ -113,4 +99,15 @@
 	"common.h"
 	"extrnvar.h"
 	"resdump.h"
+
+1590457198 c:\projects\jarvisos\research\pedump\pedump.h
+	<windows.h>
+	<winioctl.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<tchar.h>
+	<locale.h>
+	<tchar.h>
+	<shellapi.h>
 
