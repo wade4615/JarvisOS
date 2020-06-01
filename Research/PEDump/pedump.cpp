@@ -2,7 +2,15 @@
 // PEDUMP - Matt Pietrek 1994-1998
 // FILE: PEDUMP.C
 //==================================
-#include "pedump.h"
+
+#include <windows.h>
+#include <stdio.h>
+#include "objdump.h"
+#include "exedump.h"
+#include "dbgdump.h"
+#include "libdump.h"
+#include "romimage.h"
+#include "extrnvar.h"
 
 // Global variables set here, and used in EXEDUMP.C and OBJDUMP.C
 BOOL fShowRelocations = FALSE;
@@ -13,7 +21,7 @@ BOOL fShowIATentries = FALSE;
 BOOL fShowPDATA = FALSE;
 BOOL fShowResources = FALSE;
 
-char HelpText[] =
+char HelpText[] = 
 "PEDUMP - Win32/COFF EXE/OBJ/LIB file dumper - 1998 Matt Pietrek\n\n"
 "Syntax: PEDUMP [switches] filename\n\n"
 "  /A    include everything in dump\n"
@@ -25,73 +33,97 @@ char HelpText[] =
 "  /R    include detailed resources (stringtables and dialogs)\n"
 "  /S    show symbol table\n";
 
-void exitWithLastError(TCHAR *format,...) {
-    LPVOID lpMsgBuf;
-    DWORD lastError = GetLastError();
-
-    va_list args;
-    va_start(args, format);
-
-    if (lastError) {
-        FormatMessage(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER |
-        FORMAT_MESSAGE_FROM_SYSTEM |
-        FORMAT_MESSAGE_IGNORE_INSERTS, NULL, lastError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &lpMsgBuf, 0, NULL);
-        _ftprintf(stderr, _T("\n"));
-        _vftprintf(stderr, format, args);
-        _ftprintf(stderr, _T("GetLastError()=%d: %s\n"), lastError, lpMsgBuf);
-    } else {
-        _ftprintf(stderr, _T("\n"));
-        _vftprintf(stderr, format, args);
-    }
-    va_end(args);
-    LocalFree(lpMsgBuf);
-    exit(lastError);
-}
-
-void DumpFile(TCHAR * filename){
-    HANDLE hFile = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-    if (hFile == INVALID_HANDLE_VALUE) {
-       exitWithLastError(_T("Couldn't open file with CreateFile()\n"));
-       return;
-    }
-    HANDLE hFileMapping = CreateFileMapping(hFile, NULL, PAGE_READONLY, 0, 0, NULL);
-    if (hFileMapping == 0) {
-        CloseHandle(hFile);
-        exitWithLastError(_T("Couldn't open file mapping with CreateFileMapping()\n"));
+//
+// Open up a file, memory map it, and call the appropriate dumping routine
+//
+void DumpFile(LPSTR filename)
+{
+    HANDLE hFile;
+    HANDLE hFileMapping;
+    LPVOID lpFileBase;
+    PIMAGE_DOS_HEADER dosHeader;
+    
+    hFile = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, NULL,
+                        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+                    
+    if ( hFile == INVALID_HANDLE_VALUE )
+    {
+        printf("Couldn't open file with CreateFile()\n");
         return;
     }
-    LPVOID lpFileBase = MapViewOfFile(hFileMapping, FILE_MAP_READ, 0, 0, 0);
-    if (lpFileBase == 0) {
+
+    hFileMapping = CreateFileMapping(hFile, NULL, PAGE_READONLY, 0, 0, NULL);
+    if ( hFileMapping == 0 )
+    {
+        CloseHandle(hFile);
+        printf("Couldn't open file mapping with CreateFileMapping()\n");
+        return;
+    }
+
+    lpFileBase = MapViewOfFile(hFileMapping, FILE_MAP_READ, 0, 0, 0);
+    if ( lpFileBase == 0 )
+    {
         CloseHandle(hFileMapping);
         CloseHandle(hFile);
-        exitWithLastError(_T("Couldn't map view of file with MapViewOfFile()\n"));
+        printf("Couldn't map view of file with MapViewOfFile()\n");
         return;
     }
 
-    _tprintf(_T("Dump of file %s\n\n"), filename);
-
-    PIMAGE_DOS_HEADER dosHeader = (PIMAGE_DOS_HEADER)lpFileBase;
+    printf("Dump of file %s\n\n", filename);
+    
+    dosHeader = (PIMAGE_DOS_HEADER)lpFileBase;
 	PIMAGE_FILE_HEADER pImgFileHdr = (PIMAGE_FILE_HEADER)lpFileBase;
-    if (dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
-        DumpExeFile(dosHeader);
+
+    if ( dosHeader->e_magic == IMAGE_DOS_SIGNATURE )
+    {
+        DumpExeFile( dosHeader );
     }
+    else if ( dosHeader->e_magic == IMAGE_SEPARATE_DEBUG_SIGNATURE )
+    {
+        DumpDbgFile( (PIMAGE_SEPARATE_DEBUG_HEADER)lpFileBase );
+    }
+    else if ( (pImgFileHdr->Machine == IMAGE_FILE_MACHINE_I386)	// FIX THIS!!!
+    		||(pImgFileHdr->Machine == IMAGE_FILE_MACHINE_ALPHA) )
+    {
+		if ( 0 == pImgFileHdr->SizeOfOptionalHeader )	// 0 optional header
+	        DumpObjFile( pImgFileHdr );					// means it's an OBJ
+
+		else if ( 	pImgFileHdr->SizeOfOptionalHeader
+					== IMAGE_SIZEOF_ROM_OPTIONAL_HEADER )
+		{
+			DumpROMImage( (PIMAGE_ROM_HEADERS)pImgFileHdr );
+		}
+    }
+    else if ( 0 == strncmp((char *)lpFileBase, 	IMAGE_ARCHIVE_START,
+                                       			IMAGE_ARCHIVE_START_SIZE ) )
+    {
+        DumpLibFile( lpFileBase );
+    }
+    else
+        printf("unrecognized file format\n");
 
     UnmapViewOfFile(lpFileBase);
     CloseHandle(hFileMapping);
     CloseHandle(hFile);
-
 }
 
-TCHAR *ProcessCommandLine(int argc, TCHAR *argv[]){
+//
+// process all the command line arguments and return a pointer to
+// the filename argument.
+//
+PSTR ProcessCommandLine(int argc, char *argv[])
+{
     int i;
-
-    for ( i=1; i < argc; i++){
-        _tcsupr(argv[i]);
-
+    
+    for ( i=1; i < argc; i++ )
+    {
+        strupr(argv[i]);
+        
         // Is it a switch character?
-        if ((argv[i][0] == '-') || (argv[i][0] == '/')) {
-            if (argv[i][1] == 'A') {
+        if ( (argv[i][0] == '-') || (argv[i][0] == '/') )
+        {
+            if ( argv[i][1] == 'A' )
+            {
                 fShowRelocations = TRUE;
                 fShowRawSectionData = TRUE;
                 fShowSymbolTable = TRUE;
@@ -100,22 +132,23 @@ TCHAR *ProcessCommandLine(int argc, TCHAR *argv[]){
                 fShowPDATA = TRUE;
 				fShowResources = TRUE;
             }
-            else if (argv[i][1] == _T('H'))
+            else if ( argv[i][1] == 'H' )
                 fShowRawSectionData = TRUE;
-            else if (argv[i][1] == _T('L'))
+            else if ( argv[i][1] == 'L' )
                 fShowLineNumbers = TRUE;
-            else if (argv[i][1] == _T('P'))
+            else if ( argv[i][1] == 'P' )
                 fShowPDATA = TRUE;
-            else if (argv[i][1] == _T('B'))
+            else if ( argv[i][1] == 'B' )
                 fShowRelocations = TRUE;
-            else if (argv[i][1] == _T('S'))
+            else if ( argv[i][1] == 'S' )
                 fShowSymbolTable = TRUE;
-            else if (argv[i][1] == _T('I'))
+            else if ( argv[i][1] == 'I' )
                 fShowIATentries = TRUE;
-            else if (argv[i][1] == _T('R'))
+            else if ( argv[i][1] == 'R' )
                 fShowResources = TRUE;
         }
-        else {    // Not a switch character.  Must be the filename
+        else    // Not a switch character.  Must be the filename
+        {
             return argv[i];
         }
     }
@@ -123,15 +156,19 @@ TCHAR *ProcessCommandLine(int argc, TCHAR *argv[]){
 	return NULL;
 }
 
-int _tmain(int argc, TCHAR *argv[]) {
-    if (argc == 1) {
-        _tprintf(HelpText);
+int main(int argc, char *argv[])
+{
+    PSTR filename;
+    
+    if ( argc == 1 )
+    {
+        printf( HelpText );
         return 1;
     }
+    
+    filename = ProcessCommandLine(argc, argv);
+    if ( filename )
+        DumpFile( filename );
 
-    TCHAR *filename = ProcessCommandLine(argc, argv);
-    if (filename){
-        DumpFile(filename);
-    }
     return 0;
 }

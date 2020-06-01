@@ -90,9 +90,27 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="coffsymboltable.cpp" />
+		<Unit filename="coffsymboltable.h" />
+		<Unit filename="common.cpp" />
+		<Unit filename="common.h" />
+		<Unit filename="cv_dbg.h" />
+		<Unit filename="dbgdump.cpp" />
+		<Unit filename="dbgdump.h" />
 		<Unit filename="exedump.cpp" />
+		<Unit filename="exedump.h" />
+		<Unit filename="extrnvar.h" />
+		<Unit filename="libdump.cpp" />
+		<Unit filename="libdump.h" />
+		<Unit filename="objdump.cpp" />
+		<Unit filename="objdump.h" />
 		<Unit filename="pedump.cpp" />
-		<Unit filename="pedump.h" />
+		<Unit filename="resdump.cpp" />
+		<Unit filename="resdump.h" />
+		<Unit filename="romimage.cpp" />
+		<Unit filename="romimage.h" />
+		<Unit filename="symboltablesupport.cpp" />
+		<Unit filename="symboltablesupport.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

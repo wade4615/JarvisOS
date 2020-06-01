@@ -7,7 +7,7 @@
 
 1589066393 c:\projects\jarvisos\research\pedump\coffsymboltable.h
 
-1589066393 source:c:\projects\jarvisos\research\pedump\dbgdump.cpp
+1590972664 source:c:\projects\jarvisos\research\pedump\dbgdump.cpp
 	<windows.h>
 	<stdio.h>
 	<time.h>
@@ -17,7 +17,7 @@
 	"extrnvar.h"
 	"dbgdump.h"
 
-1590454667 c:\projects\jarvisos\research\pedump\common.h
+1590972630 c:\projects\jarvisos\research\pedump\common.h
 
 1589066393 c:\projects\jarvisos\research\pedump\symboltablesupport.h
 
@@ -48,14 +48,21 @@
 	"COFFSymbolTable.h"
 	"extrnvar.h"
 
-1590457100 source:c:\projects\jarvisos\research\pedump\pedump.cpp
-	"pedump.h"
+1589066393 source:c:\projects\jarvisos\research\pedump\pedump.cpp
+	<windows.h>
+	<stdio.h>
+	"objdump.h"
+	"exedump.h"
+	"dbgdump.h"
+	"libdump.h"
+	"romimage.h"
+	"extrnvar.h"
 
 1589066393 c:\projects\jarvisos\research\pedump\exedump.h
 
 1589066393 c:\projects\jarvisos\research\pedump\romimage.h
 
-1589066393 source:c:\projects\jarvisos\research\pedump\romimage.cpp
+1590972771 source:c:\projects\jarvisos\research\pedump\romimage.cpp
 	<windows.h>
 	<stdio.h>
 	<time.h>
@@ -77,7 +84,7 @@
 
 1589066393 c:\projects\jarvisos\research\pedump\cv_dbg.h
 
-1590454476 source:c:\projects\jarvisos\research\pedump\common.cpp
+1590972595 source:c:\projects\jarvisos\research\pedump\common.cpp
 	<windows.h>
 	<stdio.h>
 	<string.h>
@@ -87,12 +94,19 @@
 	"symboltablesupport.h"
 	"extrnvar.h"
 
-1590457100 source:c:\projects\jarvisos\research\pedump\exedump.cpp
-	"pedump.h"
+1590972820 source:c:\projects\jarvisos\research\pedump\exedump.cpp
+	<windows.h>
+	<stdio.h>
+	<time.h>
+	"common.h"
+	"symboltablesupport.h"
+	"COFFSymbolTable.h"
+	"resdump.h"
+	"extrnvar.h"
 
 1589066393 c:\projects\jarvisos\research\pedump\resdump.h
 
-1590454616 source:c:\projects\jarvisos\research\pedump\resdump.cpp
+1590972562 source:c:\projects\jarvisos\research\pedump\resdump.cpp
 	<windows.h>
 	<stdio.h>
 	<time.h>
