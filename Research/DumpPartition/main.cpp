@@ -4,7 +4,7 @@
 //**********************************************************
 #include "main.h"
 
-void exitWithLastError(TCHAR *format,...) {
+void exitWithLastError(TCHAR *format, ...) {
     LPVOID lpMsgBuf;
     DWORD lastError = GetLastError();
 
@@ -28,17 +28,17 @@ void exitWithLastError(TCHAR *format,...) {
     exit(lastError);
 }
 
-HANDLE openVolume(TCHAR *VolumeName){
+HANDLE openVolume(TCHAR *VolumeName) {
     DWORD read;
 
     HANDLE VolumeHandle = CreateFile(VolumeName, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_FLAG_NO_BUFFERING, NULL);
     if (VolumeHandle == INVALID_HANDLE_VALUE) {
-        exitWithLastError(_T("Failed opening the volume '%s'\n"),VolumeName);
+        exitWithLastError(_T("Failed opening the volume '%s'\n"), VolumeName);
     }
     return VolumeHandle;
 }
 
-void readAndPrintNTFSBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
+void readAndPrintNTFSBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i) {
     NTFSBootSector bootSector;
     DWORD read;
 
@@ -51,7 +51,7 @@ void readAndPrintNTFSBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
     printNTFSBootSector(&bootSector);
 }
 
-void readAndPrintFAT32BootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
+void readAndPrintFAT32BootSector(HANDLE VolumeHandle, ULONGLONG offset, int i) {
     FAT32BootSector bootSector;
     DWORD read;
 
@@ -64,7 +64,7 @@ void readAndPrintFAT32BootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
     printFAT32BootSector(&bootSector);
 }
 
-void readAndPrintMasterBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
+void readAndPrintMasterBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i) {
     MasterBootRecord bootSector1;
     DWORD read;
 
@@ -77,21 +77,21 @@ void readAndPrintMasterBootSector(HANDLE VolumeHandle, ULONGLONG offset, int i){
     handleMasterBootRecord(VolumeHandle, offset, _T("Extended Partition Master Boot Record"), &bootSector1);
 }
 
-void handleMasterBootRecord(HANDLE VolumeHandle, ULONGLONG start, TCHAR *text, MasterBootRecordPtr mbr){
-    for (int i=0; i<=3; i++){
+void handleMasterBootRecord(HANDLE VolumeHandle, ULONGLONG start, TCHAR *text, MasterBootRecordPtr mbr) {
+    for (int i = 0; i <= 3; i++) {
         printMasterBootRecord(text, &mbr->partionTable[i], i);
-        ULONGLONG offset = start + mbr->partionTable[i].lbaStart*512LL;
-        if (mbr->partionTable[i].fileSystem == 0x07){
+        ULONGLONG offset = start + mbr->partionTable[i].lbaStart * 512LL;
+        if (mbr->partionTable[i].fileSystem == 0x07) {
             readAndPrintNTFSBootSector(VolumeHandle, offset, i);
-        } else if (mbr->partionTable[i].fileSystem == 0x0C){
+        } else if (mbr->partionTable[i].fileSystem == 0x0C) {
             readAndPrintFAT32BootSector(VolumeHandle, offset, i);
-        } else if (mbr->partionTable[i].fileSystem == 0x05){
+        } else if (mbr->partionTable[i].fileSystem == 0x05) {
             readAndPrintMasterBootSector(VolumeHandle, offset, i);
         }
     }
 }
 
-void dumpDrive(TCHAR *VolumeName){
+void dumpDrive(TCHAR *VolumeName) {
     HANDLE VolumeHandle;
     MasterBootRecord partitionData;
     DWORD read;
@@ -102,8 +102,8 @@ void dumpDrive(TCHAR *VolumeName){
     if (read != sizeof partitionData) {
         exitWithLastError(_T("read in %ld instead of %d in dumpDrive (%lx)\n"), read, sizeof partitionData, GetLastError());
     }
-    _tprintf(_T("\nVolume %s\n"),VolumeName);
-    handleMasterBootRecord(VolumeHandle, 0, (TCHAR *)_T("Master Boot Record Partition Number:"), &partitionData);
+    _tprintf(_T("\nVolume %s\n"), VolumeName);
+    handleMasterBootRecord(VolumeHandle, 0, (TCHAR*) _T("Master Boot Record Partition Number:"), &partitionData);
     CloseHandle(VolumeHandle);
 }
 
