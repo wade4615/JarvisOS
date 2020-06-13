@@ -20,5 +20,4 @@
 #include "romimage.h"
 #include "cv_dbg.h"
 
-
 #endif // PEDUMP_H_INCLUDED

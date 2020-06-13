@@ -3,4 +3,4 @@
 // FILE: EXEDUMP.H
 //==================================
 
-void DumpExeFile( PIMAGE_DOS_HEADER dosHeader );
+void DumpExeFile(PIMAGE_DOS_HEADER dosHeader);

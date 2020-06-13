@@ -15,53 +15,53 @@ typedef unsigned char BYTE;
 typedef unsigned short WORD;
 //typedef unsigned int DWORD;
 
-typedef struct _FormatParams{
-    int sectors_per_cluster;        // can be zero for default or 1,2,4,8,16,32 or 64
-    TCHAR *volume_label;
-    BOOL force;
+typedef struct _FormatParams {
+        int sectors_per_cluster;        // can be zero for default or 1,2,4,8,16,32 or 64
+        TCHAR *volume_label;
+        BOOL force;
 } FormatParams, *FormatParamsPtr;
 
 #pragma pack(push, 1)
 typedef struct _FAT32BootSector {
-    // Common fields.
-    BYTE sJmpBoot[3];
-    BYTE sOEMName[8];
-    WORD wBytsPerSec;
-    BYTE bSecPerClus;
-    WORD wRsvdSecCnt;
-    BYTE bNumFATs;
-    WORD wRootEntCnt;
-    WORD wTotSec16; // if zero, use dTotSec32 instead
-    BYTE bMedia;
-    WORD wFATSz16;
-    WORD wSecPerTrk;
-    WORD wNumHeads;
-    DWORD dHiddSec;
-    DWORD dTotSec32;
-    // Fat 32/16 only
-    DWORD dFATSz32;
-    WORD wExtFlags;
-    WORD wFSVer;
-    DWORD dRootClus;
-    WORD wFSInfo;
-    WORD wBkBootSec;
-    BYTE Reserved[12];
-    BYTE bDrvNum;
-    BYTE Reserved1;
-    BYTE bBootSig; // == 0x29 if next three fields are ok
-    DWORD dBS_VolID;
-    BYTE sVolLab[11];
-    BYTE sBS_FilSysType[8];
+        // Common fields.
+        BYTE sJmpBoot[3];
+        BYTE sOEMName[8];
+        WORD wBytsPerSec;
+        BYTE bSecPerClus;
+        WORD wRsvdSecCnt;
+        BYTE bNumFATs;
+        WORD wRootEntCnt;
+        WORD wTotSec16; // if zero, use dTotSec32 instead
+        BYTE bMedia;
+        WORD wFATSz16;
+        WORD wSecPerTrk;
+        WORD wNumHeads;
+        DWORD dHiddSec;
+        DWORD dTotSec32;
+        // Fat 32/16 only
+        DWORD dFATSz32;
+        WORD wExtFlags;
+        WORD wFSVer;
+        DWORD dRootClus;
+        WORD wFSInfo;
+        WORD wBkBootSec;
+        BYTE Reserved[12];
+        BYTE bDrvNum;
+        BYTE Reserved1;
+        BYTE bBootSig; // == 0x29 if next three fields are ok
+        DWORD dBS_VolID;
+        BYTE sVolLab[11];
+        BYTE sBS_FilSysType[8];
 } FAT32BootSector, *FAT32BootSectorPtr;
 
-typedef struct _FAT32FSInfo{
-    DWORD dLeadSig;         // 0x41615252
-    BYTE sReserved1[480];   // zeros
-    DWORD dStrucSig;        // 0x61417272
-    DWORD dFree_Count;      // 0xFFFFFFFF
-    DWORD dNxt_Free;        // 0xFFFFFFFF
-    BYTE sReserved2[12];    // zeros
-    DWORD dTrailSig;     // 0xAA550000
+typedef struct _FAT32FSInfo {
+        DWORD dLeadSig;         // 0x41615252
+        BYTE sReserved1[480];   // zeros
+        DWORD dStrucSig;        // 0x61417272
+        DWORD dFree_Count;      // 0xFFFFFFFF
+        DWORD dNxt_Free;        // 0xFFFFFFFF
+        BYTE sReserved2[12];    // zeros
+        DWORD dTrailSig;     // 0xAA550000
 } FAT32FSInfo, *FAT32FSInfoPtr;
 
 #pragma pack(pop)

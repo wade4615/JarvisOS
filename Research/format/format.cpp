@@ -343,7 +343,7 @@ int format_volume(char vol, FormatParamsPtr params) {
     pFAT32BootSect->sJmpBoot[0] = 0xEB;
     pFAT32BootSect->sJmpBoot[1] = 0x58; // jmp.s $+0x5a is 0xeb 0x58, not 0xeb 0x5a. Thanks Marco!
     pFAT32BootSect->sJmpBoot[2] = 0x90;
-    strncpy((char *)pFAT32BootSect->sOEMName, "MSWIN4.1", 8);
+    strncpy((char*) pFAT32BootSect->sOEMName, "MSWIN4.1", 8);
     pFAT32BootSect->wBytsPerSec = (WORD) BytesPerSect;
 
     if (params->sectors_per_cluster)
@@ -380,7 +380,7 @@ int format_volume(char vol, FormatParamsPtr params) {
     pFAT32BootSect->dBS_VolID = VolumeId;
     if (params->volume_label) {
         memset(VolLab, 0x20, 11);
-        strncpy((char *)VolLab, params->volume_label, 11);
+        strncpy((char*) VolLab, params->volume_label, 11);
     }
     memcpy(pFAT32BootSect->sVolLab, VolLab, 11);
     memcpy(pFAT32BootSect->sBS_FilSysType, "FAT32   ", 8);
@@ -568,40 +568,40 @@ int __cdecl _tmain(int argc, const TCHAR *argv[]) {
 
     while (i < argc && (strlen(argv[i]) >= 2) && ((argv[i][0] == '-') || (argv[i][0] == '/'))) {
         switch (argv[i][1]) {
-            case 'c':
-                if (strlen(argv[i]) >= 3) {
-                    p.sectors_per_cluster = atol(&argv[i][2]);
-                    if ((p.sectors_per_cluster != 1) &&  // 512 bytes, 0.5k
-                            (p.sectors_per_cluster != 2) &&  // 1K
-                            (p.sectors_per_cluster != 4) &&  // 2K
-                            (p.sectors_per_cluster != 8) &&  // 4K
-                            (p.sectors_per_cluster != 16) &&  // 8K
-                            (p.sectors_per_cluster != 32) &&  // 16K
-                            (p.sectors_per_cluster != 64) &&  // 32K
-                            (p.sectors_per_cluster != 128)    // 64K ( Microsoft say don't use 64K or bigger);
-                            ) {
-                        printf("Ignoring bad cluster size %d\n", p.sectors_per_cluster);
-                        p.sectors_per_cluster = 0;
-                    }
-                } else
-                    usage();
-                break;
-            case 'v':
-                if (strlen(argv[i]) >= 3)
-                    p.volume_label = (TCHAR *)&argv[i][2];
-                else
-                    usage();
-                break;
-            case 'F':
-                p.force = TRUE;
-                break;
-            case '?':
-                usage();
-                break;
-            default:
-                printf("Ignoring bad flag '-%c'\n", argv[i][1]);
-                usage();
-                break;
+        case 'c':
+        if (strlen(argv[i]) >= 3) {
+            p.sectors_per_cluster = atol(&argv[i][2]);
+            if ((p.sectors_per_cluster != 1) &&  // 512 bytes, 0.5k
+                    (p.sectors_per_cluster != 2) &&  // 1K
+                    (p.sectors_per_cluster != 4) &&  // 2K
+                    (p.sectors_per_cluster != 8) &&  // 4K
+                    (p.sectors_per_cluster != 16) &&  // 8K
+                    (p.sectors_per_cluster != 32) &&  // 16K
+                    (p.sectors_per_cluster != 64) &&  // 32K
+                    (p.sectors_per_cluster != 128)    // 64K ( Microsoft say don't use 64K or bigger);
+                    ) {
+                printf("Ignoring bad cluster size %d\n", p.sectors_per_cluster);
+                p.sectors_per_cluster = 0;
+            }
+        } else
+            usage();
+            break;
+        case 'v':
+        if (strlen(argv[i]) >= 3)
+            p.volume_label = (TCHAR*) &argv[i][2];
+        else
+            usage();
+            break;
+        case 'F':
+        p.force = TRUE;
+            break;
+        case '?':
+        usage();
+            break;
+        default:
+        printf("Ignoring bad flag '-%c'\n", argv[i][1]);
+        usage();
+            break;
         }
         i++;
     }

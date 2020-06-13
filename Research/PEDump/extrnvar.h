@@ -19,5 +19,5 @@ extern PIMAGE_DEBUG_MISC g_pMiscDebugInfo;
 extern PDWORD g_pCVHeader;
 
 class COFFSymbolTable;
-extern COFFSymbolTable * g_pCOFFSymbolTable;
+extern COFFSymbolTable *g_pCOFFSymbolTable;
 

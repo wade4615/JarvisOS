@@ -21,8 +21,7 @@ typedef struct _NTFS_RECORD_HEADER {
     ULONGLONG Lsn;
 } NTFS_RECORD_HEADER, *PNTFS_RECORD_HEADER;
 
-typedef struct _FILE_RECORD_HEADER
-{
+typedef struct _FILE_RECORD_HEADER {
     NTFS_RECORD_HEADER Ntfs;
     USHORT SequenceNumber;
     USHORT LinkCount;
@@ -63,21 +62,8 @@ typedef struct _NTFS_ATTR_RECORD {
     };
 } NTFS_ATTR_RECORD, *PNTFS_ATTR_RECORD;
 
-static TCHAR * MetaDataFiles[] = {
-    _T("$MFT\t\t"),
-    _T("$MFTMirr\t"),
-    _T("$LogFile\t"),
-    _T("$Volume\t\t"),
-    _T("$AttrDef\t"),
-    _T("."),
-    _T("$Bitmap\t\t"),
-    _T("$Boot\t\t"),
-    _T("$BadClus\t"),
-    _T("$Quota\t\t"),
-    _T("$UpCase\t\t"),
-    _T("$Extended\t"),
-    NULL,
-};
+static TCHAR *MetaDataFiles[] = { _T("$MFT\t\t"), _T("$MFTMirr\t"), _T("$LogFile\t"), _T("$Volume\t\t"), _T("$AttrDef\t"), _T("."), _T("$Bitmap\t\t"), _T("$Boot\t\t"), _T("$BadClus\t"), _T("$Quota\t\t"), _T("$UpCase\t\t"), _T("$Extended\t"),
+NULL, };
 
 #define DOT     _T('.')
 #define COMMA   _T(',')
@@ -85,36 +71,36 @@ static TCHAR * MetaDataFiles[] = {
 
 static TCHAR commas[MAX]; // Where the result is
 
-TCHAR *addCommas(ULONGLONG f) {
-  TCHAR tmp[MAX];            // temp area
-  _stprintf(tmp, _T("%I64u"), f);    // refine %f if you need
-  TCHAR *dot = _tcschr(tmp, DOT); // do we have a DOT?
-  TCHAR *src,*dst; // source, dest
+TCHAR* addCommas(ULONGLONG f) {
+    TCHAR tmp[MAX];            // temp area
+    _stprintf(tmp, _T("%I64u"), f);    // refine %f if you need
+    TCHAR *dot = _tcschr(tmp, DOT); // do we have a DOT?
+    TCHAR *src, *dst; // source, dest
 
-  if (dot) {            // Yes
-    dst = commas+MAX-_tcslen(dot)-1; // set dest to allow the fractional part to fit
-    strcpy(dst, dot);               // copy that part
-    *dot = 0;       // 'cut' that frac part in tmp
-    src = --dot;    // point to last non frac char in tmp
-    dst--;          // point to previous 'free' char in dest
-  }
-  else {                // No
-    src = tmp+_tcslen(tmp)-1;    // src is last char of our float string
-    dst = commas+MAX-1;         // dst is last char of commas
-  }
-
-  int len = strlen(tmp);        // len is the mantissa size
-  int cnt = 0;                  // char counter
-
-  do {
-    if ( *src<='9' && *src>='0' ) {  // add comma is we added 3 digits already
-      if (cnt && !(cnt % 3)) *dst-- = COMMA;
-      cnt++; // mantissa digit count increment
+    if (dot) {            // Yes
+        dst = commas + MAX - _tcslen(dot) - 1; // set dest to allow the fractional part to fit
+        strcpy(dst, dot);               // copy that part
+        *dot = 0;       // 'cut' that frac part in tmp
+        src = --dot;    // point to last non frac char in tmp
+        dst--;          // point to previous 'free' char in dest
+    } else {                // No
+        src = tmp + _tcslen(tmp) - 1;    // src is last char of our float string
+        dst = commas + MAX - 1;         // dst is last char of commas
     }
-    *dst-- = *src--;
-  } while (--len);
 
-  return dst+1; // return pointer to result
+    int len = strlen(tmp);        // len is the mantissa size
+    int cnt = 0;                  // char counter
+
+    do {
+        if (*src <= '9' && *src >= '0') {  // add comma is we added 3 digits already
+            if (cnt && !(cnt % 3))
+                *dst-- = COMMA;
+            cnt++; // mantissa digit count increment
+        }
+        *dst-- = *src--;
+    } while (--len);
+
+    return dst + 1; // return pointer to result
 }
 
 int __cdecl _tmain(int argc, const TCHAR *argv[]) {
@@ -193,10 +179,7 @@ int __cdecl _tmain(int argc, const TCHAR *argv[]) {
         }
 
         InputBuffer.FileReferenceNumber.QuadPart = File;
-        if (!DeviceIoControl(VolumeHandle, FSCTL_GET_NTFS_FILE_RECORD, &InputBuffer, sizeof(InputBuffer),
-                             OutputBuffer, VolumeInfo.BytesPerFileRecordSegment  + sizeof(NTFS_FILE_RECORD_OUTPUT_BUFFER),
-                             &LengthReturned, NULL))
-        {
+        if (!DeviceIoControl(VolumeHandle, FSCTL_GET_NTFS_FILE_RECORD, &InputBuffer, sizeof(InputBuffer), OutputBuffer, VolumeInfo.BytesPerFileRecordSegment + sizeof(NTFS_FILE_RECORD_OUTPUT_BUFFER), &LengthReturned, NULL)) {
             ++File;
             continue;
         }
@@ -206,24 +189,20 @@ int __cdecl _tmain(int argc, const TCHAR *argv[]) {
             continue;
         }
 
-        FileRecord = (PFILE_RECORD_HEADER)OutputBuffer->FileRecordBuffer;
-        if (FileRecord->Ntfs.Type != NRH_FILE_TYPE)
-        {
+        FileRecord = (PFILE_RECORD_HEADER) OutputBuffer->FileRecordBuffer;
+        if (FileRecord->Ntfs.Type != NRH_FILE_TYPE) {
             ++File;
             continue;
         }
 
-        Attribute = (PNTFS_ATTR_RECORD)((ULONG_PTR)FileRecord + FileRecord->AttributeOffset);
-        while (Attribute < (PNTFS_ATTR_RECORD)((ULONG_PTR)FileRecord + FileRecord->BytesInUse) &&
-               Attribute->Type != ATTRIBUTE_TYPE_END)
-        {
-            if (Attribute->Type == ATTRIBUTE_TYPE_DATA)
-            {
+        Attribute = (PNTFS_ATTR_RECORD) ((ULONG_PTR) FileRecord + FileRecord->AttributeOffset);
+        while (Attribute < (PNTFS_ATTR_RECORD) ((ULONG_PTR) FileRecord + FileRecord->BytesInUse) && Attribute->Type != ATTRIBUTE_TYPE_END) {
+            if (Attribute->Type == ATTRIBUTE_TYPE_DATA) {
                 Size = (Attribute->IsNonResident) ? Attribute->NonResident.AllocatedSize : Attribute->Resident.ValueLength;
                 break;
             }
 
-            Attribute = (PNTFS_ATTR_RECORD)((ULONG_PTR)Attribute + Attribute->Length);
+            Attribute = (PNTFS_ATTR_RECORD) ((ULONG_PTR) Attribute + Attribute->Length);
         }
 
         _tprintf(_T("%s%I64u bytes\n"), MetaDataFiles[File], Size);
