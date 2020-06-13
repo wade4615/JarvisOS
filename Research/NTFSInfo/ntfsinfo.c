@@ -1,3 +1,7 @@
+//**********************************************************
+//** NTFSInfo copyright (c) 2020 Christopher D. Wade      **
+//** File: NTFSInfo.c                                     **
+//**********************************************************
 #include <windows.h>
 #include <tchar.h>
 #include <stdio.h>

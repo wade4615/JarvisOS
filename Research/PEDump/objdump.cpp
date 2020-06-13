@@ -1,14 +1,8 @@
-//==================================
-// PEDUMP - Matt Pietrek 1997
-// FILE: OBJDUMP.C
-//==================================
-
-#include <windows.h>
-#include <stdio.h>
-#include "common.h"
-#include "SymbolTableSupport.h"
-#include "COFFSymbolTable.h"
-#include "extrnvar.h"
+//**********************************************************
+//** PEDump copyright (c) 2020 Christopher D. Wade        **
+//** File: OBJDump.cpp                                    **
+//**********************************************************
+#include "PEDump.h"
 
 typedef struct _i386RelocTypes
 {
@@ -17,7 +11,7 @@ typedef struct _i386RelocTypes
 } i386RelocTypes;
 
 // ASCII names for the various relocations used in i386 COFF OBJs
-i386RelocTypes i386Relocations[] = 
+i386RelocTypes i386Relocations[] =
 {
 { IMAGE_REL_I386_ABSOLUTE, "ABSOLUTE" },
 { IMAGE_REL_I386_DIR16, "DIR16" },
@@ -37,14 +31,14 @@ i386RelocTypes i386Relocations[] =
 void GetObjRelocationName(WORD type, PSTR buffer, DWORD cBytes)
 {
     DWORD i;
-    
+
     for ( i=0; i < I386RELOCTYPECOUNT; i++ )
         if ( type == i386Relocations[i].type )
         {
             strncpy(buffer, i386Relocations[i].name, cBytes);
             return;
         }
-        
+
     sprintf( buffer, "???_%X", type);
 }
 
@@ -55,7 +49,7 @@ void DumpObjRelocations(PIMAGE_RELOCATION pRelocs, DWORD count)
 {
     DWORD i;
     char szTypeName[32];
-    
+
     for ( i=0; i < count; i++ )
     {
         GetObjRelocationName(pRelocs->Type, szTypeName, sizeof(szTypeName));
@@ -74,7 +68,7 @@ void DumpObjFile( PIMAGE_FILE_HEADER pImageFileHeader )
 {
     unsigned i;
     PIMAGE_SECTION_HEADER pSections;
-    
+
     DumpHeader(pImageFileHeader);
     printf("\n");
 
@@ -90,7 +84,7 @@ void DumpObjFile( PIMAGE_FILE_HEADER pImageFileHeader )
         {
             if ( pSections[i].PointerToRelocations == 0 )
                 continue;
-        
+
             printf("Section %02X (%.8s) relocations\n", i, pSections[i].Name);
             DumpObjRelocations( MakePtr(PIMAGE_RELOCATION, pImageFileHeader,
                                     pSections[i].PointerToRelocations),
@@ -98,11 +92,11 @@ void DumpObjFile( PIMAGE_FILE_HEADER pImageFileHeader )
             printf("\n");
         }
     }
-     
+
     if ( fShowSymbolTable && pImageFileHeader->PointerToSymbolTable )
     {
 		g_pCOFFSymbolTable = new COFFSymbolTable(
-					MakePtr(PVOID, pImageFileHeader, 
+					MakePtr(PVOID, pImageFileHeader,
 							pImageFileHeader->PointerToSymbolTable),
 					pImageFileHeader->NumberOfSymbols );
 
@@ -127,7 +121,7 @@ void DumpObjFile( PIMAGE_FILE_HEADER pImageFileHeader )
             pSections++;
         }
     }
-    
+
     if ( fShowRawSectionData )
     {
         DumpRawSectionData( (PIMAGE_SECTION_HEADER)(pImageFileHeader+1),

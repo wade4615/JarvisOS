@@ -1,17 +1,8 @@
-//==================================
-// PEDUMP - Matt Pietrek 1997
-// FILE: EXEDUMP.C
-//==================================
-
-#include <windows.h>
-#include <stdio.h>
-#include <time.h>
-#pragma hdrstop
-#include "common.h"
-#include "symboltablesupport.h"
-#include "COFFSymbolTable.h"
-#include "resdump.h"
-#include "extrnvar.h"
+//**********************************************************
+//** PEDump copyright (c) 2020 Christopher D. Wade        **
+//** File: EXEDump.cpp                                    **
+//**********************************************************
+#include "PEDump.h"
 
 void DumpExeDebugDirectory(DWORD base, PIMAGE_NT_HEADERS pNTHeader)
 {

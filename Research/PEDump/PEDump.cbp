@@ -90,6 +90,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="PEDUMP.H" />
 		<Unit filename="coffsymboltable.cpp" />
 		<Unit filename="coffsymboltable.h" />
 		<Unit filename="common.cpp" />

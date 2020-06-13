@@ -1,16 +1,8 @@
-//==================================
-// PEDUMP - Matt Pietrek 1997
-// FILE: COMMON.C
-//==================================
-
-#include <windows.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
-#include "common.h"
-#include "symboltablesupport.h"
-#include "extrnvar.h"
+//**********************************************************
+//** PEDump copyright (c) 2020 Christopher D. Wade        **
+//** File: Common.cpp                                     **
+//**********************************************************
+#include "PEDump.h"
 
 PIMAGE_DEBUG_MISC g_pMiscDebugInfo = 0;
 PDWORD g_pCVHeader = 0;

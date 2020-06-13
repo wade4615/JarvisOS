@@ -1,16 +1,8 @@
-//==================================
-// PEDUMP - Matt Pietrek 1997
-// FILE: DBGDUMP.C
-//==================================
-
-#include <windows.h>
-#include <stdio.h>
-#include <time.h>
-#include "common.h"
-#include "COFFSymbolTable.h"
-#include "SymbolTableSupport.h"
-#include "extrnvar.h"
-#include "dbgdump.h"
+//**********************************************************
+//** PEDump copyright (c) 2020 Christopher D. Wade        **
+//** File: DBGDump.cpp                                    **
+//**********************************************************
+#include "PEDump.h"
 
 void DumpImageDbgHeader(PIMAGE_SEPARATE_DEBUG_HEADER pImageSepDbgHeader)
 {

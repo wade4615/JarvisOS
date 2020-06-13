@@ -1,3 +1,7 @@
+//**********************************************************
+//** DumpPartition copyright (c) 2020 Christopher D. Wade **
+//** File: Print.cpp                                      **
+//**********************************************************
 #include "main.h"
 
 void printFAT32BootSector(FAT32BootSectorPtr bootSector){

@@ -1,3 +1,7 @@
+//**********************************************************
+//** DumpPartition copyright (c) 2020 Christopher D. Wade **
+//** File: Main.cpp                                      **
+//**********************************************************
 #include "main.h"
 
 void exitWithLastError(TCHAR *format,...) {

@@ -1,17 +1,8 @@
-//==================================
-// PEDUMP - Matt Pietrek 1997
-// FILE: LIBDUMP.C
-//==================================
-
-#include <windows.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <time.h>
-#include "common.h"
-#include "objdump.h"
-#include "libdump.h"
-#include "extrnvar.h"
+//**********************************************************
+//** PEDump copyright (c) 2020 Christopher D. Wade        **
+//** File: LIBDump.cpp                                    **
+//**********************************************************
+#include "PEDump.h"
 
 PSTR PszLongnames = 0;
 
@@ -31,7 +22,7 @@ void DisplayArchiveMemberHeader(
 	char szDateAsLong[64];
 	sprintf( szDateAsLong, "%.12s", pArchHeader->Date );
 	LONG dateAsLong = atol(szDateAsLong);
-	
+
     printf("  Date:     %.12s %s", pArchHeader->Date, ctime((time_t *) &dateAsLong) );
     printf("  UserID:   %.6s\n", pArchHeader->UserID);
     printf("  GroupID:  %.6s\n", pArchHeader->GroupID);
@@ -48,19 +39,19 @@ void DumpFirstLinkerMember(PVOID p)
 
     cSymbols = ConvertBigEndian(cSymbols);
     pSymbolName = MakePtr( PSTR, pMemberOffsets, 4 * cSymbols );
-    
+
     printf("First Linker Member:\n");
     printf( "  Symbols:         %08X\n", cSymbols );
     printf( "  MbrOffs   Name\n  --------  ----\n" );
-        
+
     for ( i = 0; i < cSymbols; i++ )
     {
         DWORD offset;
-        
+
         offset = ConvertBigEndian( *pMemberOffsets );
-        
+
         printf("  %08X  %s\n", offset, pSymbolName);
-        
+
         pMemberOffsets++;
         pSymbolName += strlen(pSymbolName) + 1;
     }
@@ -84,9 +75,9 @@ void DumpSecondLinkerMember(PVOID p)
     pIndices = MakePtr( PWORD, p, 4 + cArchiveMembers * sizeof(DWORD) + 4 );
 
     pSymbolName = MakePtr( PSTR, pIndices, cSymbols * sizeof(WORD) );
-    
+
     printf("Second Linker Member:\n");
-    
+
     printf( "  Archive Members: %08X\n", cArchiveMembers );
     printf( "  Symbols:         %08X\n", cSymbols );
     printf( "  MbrOffs   Name\n  --------  ----\n" );
@@ -107,7 +98,7 @@ void DumpLongnamesMember(PVOID p, DWORD len)
                                 // out OBJ member names
 
     printf("Longnames:\n");
-    
+
     // The longnames member is a series of null-terminated string.  Print
     // out the offset of each string (in decimal), followed by the string.
     while ( offset < len )
@@ -133,14 +124,14 @@ void DumpLibFile( LPVOID lpFileBase )
         printf("Not a valid .LIB file - signature not found\n");
         return;
     }
-    
+
     pArchHeader = MakePtr(PIMAGE_ARCHIVE_MEMBER_HEADER, lpFileBase,
                             IMAGE_ARCHIVE_START_SIZE);
 
     while ( pArchHeader )
     {
         DWORD thisMemberSize;
-        
+
         DisplayArchiveMemberHeader( pArchHeader,
                                     (PBYTE)pArchHeader - (PBYTE) lpFileBase );
         printf("\n");
@@ -173,7 +164,7 @@ void DumpLibFile( LPVOID lpFileBase )
             DumpObjFile( (PIMAGE_FILE_HEADER)(pArchHeader + 1) );
         }
 
-        // Calculate how big this member is (it's originally stored as 
+        // Calculate how big this member is (it's originally stored as
         // as ASCII string.
         thisMemberSize = atoi((char *)pArchHeader->Size)
                         + IMAGE_SIZEOF_ARCHIVE_MEMBER_HDR;

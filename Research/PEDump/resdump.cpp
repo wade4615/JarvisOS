@@ -1,15 +1,8 @@
-//==================================
-// PEDUMP - Matt Pietrek 1997
-// FILE: RESDUMP.C
-//==================================
-
-#include <windows.h>
-#include <stdio.h>
-#include <time.h>
-#pragma hdrstop
-#include "common.h"
-#include "extrnvar.h"
-#include "resdump.h"
+//**********************************************************
+//** PEDump copyright (c) 2020 Christopher D. Wade        **
+//** File: RESDump.cpp                                    **
+//**********************************************************
+#include "PEDump.h"
 
 #ifndef max
 #define max(a, b) (((a) > (b)) ? (a) : (b))

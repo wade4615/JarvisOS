@@ -1,3 +1,7 @@
+//**********************************************************
+//** NTFSDump copyright (c) 2020 Christopher D. Wade      **
+//** File: Main.cpp                                       **
+//**********************************************************
 #include <windows.h>
 #include <tchar.h>
 #include <stdio.h>

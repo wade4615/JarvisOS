@@ -1,17 +1,8 @@
-//==================================
-// PEDUMP - Matt Pietrek 1997
-// FILE: COMMON.C
-//==================================
-
-#include <windows.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
-#include "common.h"
-#include "COFFSymbolTable.h"
-#include "extrnvar.h"
-#include "cv_dbg.h"
+//**********************************************************
+//** PEDump copyright (c) 2020 Christopher D. Wade        **
+//** File: SymbolTableSupport.cpp                         **
+//**********************************************************
+#include "PEDump.h"
 
 //
 // Dump the COFF debug information header
@@ -59,9 +50,9 @@ void DumpLineNumbers(PIMAGE_LINENUMBER pln, DWORD count)
 {
     char buffer[64];
     DWORD i;
-    
+
     printf("Line Numbers\n");
-    
+
     for (i=0; i < count; i++)
     {
         if ( pln->Linenumber == 0 ) // A symbol table index
@@ -87,7 +78,7 @@ void DumpLineNumbers(PIMAGE_LINENUMBER pln, DWORD count)
 void GetSectionName(WORD section, PSTR buffer, unsigned cbBuffer)
 {
     char tempbuffer[10];
-    
+
     switch ( (SHORT)section )
     {
         case IMAGE_SYM_UNDEFINED: strcpy(tempbuffer, "UNDEF"); break;
@@ -95,7 +86,7 @@ void GetSectionName(WORD section, PSTR buffer, unsigned cbBuffer)
         case IMAGE_SYM_DEBUG:     strcpy(tempbuffer, "DEBUG"); break;
         default: sprintf(tempbuffer, "%X", section);
     }
-    
+
     strncpy(buffer, tempbuffer, cbBuffer-1);
 }
 
@@ -128,9 +119,9 @@ void DumpSymbolTable( PCOFFSymbolTable pSymTab )
 		{
 			char szAuxSymbol[1024];
 			if (pSymbol->GetAuxSymbolAsString(szAuxSymbol,sizeof(szAuxSymbol)))
-				printf( "     * %s\n", szAuxSymbol );			
+				printf( "     * %s\n", szAuxSymbol );
 		}
-		
+
 		pSymbol = pSymTab->GetNextSymbol( pSymbol );
 
 	}
@@ -140,7 +131,7 @@ void DumpMiscDebugInfo( PIMAGE_DEBUG_MISC pMiscDebugInfo )
 {
 	if ( IMAGE_DEBUG_MISC_EXENAME != pMiscDebugInfo->DataType )
 	{
-		printf( "Unknown Miscellaneous Debug Information type: %u\n", 
+		printf( "Unknown Miscellaneous Debug Information type: %u\n",
 				pMiscDebugInfo->DataType );
 		return;
 	}

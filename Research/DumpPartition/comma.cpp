@@ -1,3 +1,7 @@
+//**********************************************************
+//** DumpPartition copyright (c) 2020 Christopher D. Wade **
+//** File: Comma.cpp                                      **
+//**********************************************************
 #include "main.h"
 
 #define DOT     _T('.')

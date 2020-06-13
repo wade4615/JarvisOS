@@ -1,3 +1,7 @@
+//**********************************************************
+//** DumpPartition copyright (c) 2020 Christopher D. Wade **
+//** File: FileIO.cpp                                      **
+//**********************************************************
 #include "main.h"
 
 LONGLONG seek (HANDLE fileHandle, LONGLONG distance, DWORD MoveMethod) {

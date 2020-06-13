@@ -1,16 +1,8 @@
-//==================================
-// PEDUMP - Matt Pietrek 1994-1998
-// FILE: PEDUMP.C
-//==================================
-
-#include <windows.h>
-#include <stdio.h>
-#include "objdump.h"
-#include "exedump.h"
-#include "dbgdump.h"
-#include "libdump.h"
-#include "romimage.h"
-#include "extrnvar.h"
+//**********************************************************
+//** PEDump copyright (c) 2020 Christopher D. Wade        **
+//** File: PEDump.cpp                                     **
+//**********************************************************
+#include "PEDump.h"
 
 // Global variables set here, and used in EXEDUMP.C and OBJDUMP.C
 BOOL fShowRelocations = FALSE;
@@ -21,7 +13,7 @@ BOOL fShowIATentries = FALSE;
 BOOL fShowPDATA = FALSE;
 BOOL fShowResources = FALSE;
 
-char HelpText[] = 
+char HelpText[] =
 "PEDUMP - Win32/COFF EXE/OBJ/LIB file dumper - 1998 Matt Pietrek\n\n"
 "Syntax: PEDUMP [switches] filename\n\n"
 "  /A    include everything in dump\n"
@@ -42,10 +34,10 @@ void DumpFile(LPSTR filename)
     HANDLE hFileMapping;
     LPVOID lpFileBase;
     PIMAGE_DOS_HEADER dosHeader;
-    
+
     hFile = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, NULL,
                         OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-                    
+
     if ( hFile == INVALID_HANDLE_VALUE )
     {
         printf("Couldn't open file with CreateFile()\n");
@@ -70,7 +62,7 @@ void DumpFile(LPSTR filename)
     }
 
     printf("Dump of file %s\n\n", filename);
-    
+
     dosHeader = (PIMAGE_DOS_HEADER)lpFileBase;
 	PIMAGE_FILE_HEADER pImgFileHdr = (PIMAGE_FILE_HEADER)lpFileBase;
 
@@ -114,11 +106,11 @@ void DumpFile(LPSTR filename)
 PSTR ProcessCommandLine(int argc, char *argv[])
 {
     int i;
-    
+
     for ( i=1; i < argc; i++ )
     {
         strupr(argv[i]);
-        
+
         // Is it a switch character?
         if ( (argv[i][0] == '-') || (argv[i][0] == '/') )
         {
@@ -159,13 +151,13 @@ PSTR ProcessCommandLine(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
     PSTR filename;
-    
+
     if ( argc == 1 )
     {
         printf( HelpText );
         return 1;
     }
-    
+
     filename = ProcessCommandLine(argc, argv);
     if ( filename )
         DumpFile( filename );

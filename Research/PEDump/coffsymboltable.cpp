@@ -1,40 +1,32 @@
-#include <windows.h>
-#include <malloc.h>
-#include <stdio.h>
-#include "COFFSymbolTable.h"
+//**********************************************************
+//** PEDump copyright (c) 2020 Christopher D. Wade        **
+//** File: COFFSymbolTable.cpp                            **
+//**********************************************************
+#include "PEDump.h"
 
-COFFSymbol::COFFSymbol(
-	PIMAGE_SYMBOL pSymbolData,
-	PSTR pStringTable,
-	DWORD index )
-{
+COFFSymbol::COFFSymbol(PIMAGE_SYMBOL pSymbolData, PSTR pStringTable, DWORD index){
 	m_pSymbolData = pSymbolData;
 	m_pStringTable = pStringTable;
 	m_index = index;
 	m_pszShortString = 0;
 }
 
-COFFSymbol::~COFFSymbol( )
-{
+COFFSymbol::~COFFSymbol(){
 	CleanUp();
 }
 
-void
-COFFSymbol::CleanUp( void )
-{
-	if ( m_pszShortString )
-		free( m_pszShortString );
-
+void COFFSymbol::CleanUp(void) {
+	if (m_pszShortString) {
+		free(m_pszShortString);
+	}
 	m_pszShortString = 0;
 }
 
-PSTR
-COFFSymbol::GetName()
-{
-	if ( !m_pSymbolData )
+PSTR COFFSymbol::GetName() {
+	if (!m_pSymbolData)
 		return 0;
 
-	if ( 0 != m_pSymbolData->N.Name.Short )
+	if (0 != m_pSymbolData->N.Name.Short )
 	{
 		m_pszShortString = (PSTR)malloc( 9 );
 		memcpy( m_pszShortString, m_pSymbolData->N.ShortName, 8 );
@@ -42,7 +34,7 @@ COFFSymbol::GetName()
 
 		return m_pszShortString;
 	}
-	
+
 	return m_pStringTable + m_pSymbolData->N.Name.Long;
 }
 
@@ -70,10 +62,10 @@ COFFSymbol::GetAuxSymbolAsString( PSTR pszBuffer, unsigned cbBuffer )
 
 	//
 	// Auxillary symbol immediately follows the main symbol.  Note the pointer
-	// arithmetic going on here.	
+	// arithmetic going on here.
 	//
     PIMAGE_AUX_SYMBOL auxSym = (PIMAGE_AUX_SYMBOL)(m_pSymbolData+1);
-    
+
     if ( m_pSymbolData->StorageClass == IMAGE_SYM_CLASS_FILE )
 	{
         lstrcpyn( pszBuffer, (char *)auxSym, cbBuffer );
@@ -81,7 +73,7 @@ COFFSymbol::GetAuxSymbolAsString( PSTR pszBuffer, unsigned cbBuffer )
     else if ( (m_pSymbolData->StorageClass == IMAGE_SYM_CLASS_EXTERNAL) )
     {
         if ( (m_pSymbolData->Type & 0xF0) == (IMAGE_SYM_DTYPE_FUNCTION << 4))
-        {   
+        {
         	wsprintf( pszBuffer,
 				"tag: %04X  size: %04X  Line #'s: %08X  next fn: %04X",
             	auxSym->Sym.TagIndex, auxSym->Sym.Misc.TotalSize,
@@ -101,7 +93,7 @@ COFFSymbol::GetAuxSymbolAsString( PSTR pszBuffer, unsigned cbBuffer )
 	{
 		lstrcpyn( pszBuffer, "<unhandled aux symbol>", cbBuffer );
 	}
-	
+
 	return TRUE;
 }
 

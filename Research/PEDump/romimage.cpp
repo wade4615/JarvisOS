@@ -1,16 +1,8 @@
-//==================================
-// PEDUMP - Matt Pietrek 1997
-// FILE: EXEDUMP.C
-//==================================
-
-#include <windows.h>
-#include <stdio.h>
-#include <time.h>
-#pragma hdrstop
-#include "common.h"
-#include "exedump.h"
-#include "COFFSymbolTable.h"
-#include "extrnvar.h"
+//**********************************************************
+//** PEDump copyright (c) 2020 Christopher D. Wade        **
+//** File: ROMImageDump.cpp                               **
+//**********************************************************
+#include "PEDump.h"
 
 void DumpROMOptionalHeader( PIMAGE_ROM_OPTIONAL_HEADER pROMOptHdr )
 {
