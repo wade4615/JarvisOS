@@ -112,5 +112,7 @@ int _tmain(int argc, const TCHAR *argv[]) {
     dumpDrive(_T("\\\\.\\PhysicalDrive0"));
     dumpDrive(_T("\\\\.\\PhysicalDrive1"));
     dumpDrive(_T("\\\\.\\PhysicalDrive2"));
+    dumpDrive(_T("\\\\.\\PhysicalDrive3"));
+    dumpDrive(_T("\\\\.\\PhysicalDrive4"));
     return 0;
 }

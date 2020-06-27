@@ -128,19 +128,19 @@ int __cdecl _tmain(int argc, TCHAR *argv[]) {
     TCHAR *outputFile = NULL;
 
     switch (argc) {
-    case 2:
-    drive[4] = argv[1][0];
-        break;
-    case 4:
-    drive[4] = argv[1][0];
-    targetRecord = _tstoi64(argv[2]);
-    outputFile = argv[3];
-        break;
-    default:
-    _tprintf(_T("Usage:\n"));
-    _tprintf(_T("  ntfsdump DriveLetter\n"));
-    _tprintf(_T("  ntfsdump DriveLetter RecordIndex OutputFileName\n"));
-    throw 0;
+        case 2:
+        drive[4] = argv[1][0];
+            break;
+        case 4:
+        drive[4] = argv[1][0];
+        targetRecord = _tstoi64(argv[2]);
+        outputFile = argv[3];
+            break;
+        default:
+        _tprintf(_T("Usage:\n"));
+        _tprintf(_T("  ntfsdump DriveLetter\n"));
+        _tprintf(_T("  ntfsdump DriveLetter RecordIndex OutputFileName\n"));
+        throw 0;
     }
     return 0;
 }
